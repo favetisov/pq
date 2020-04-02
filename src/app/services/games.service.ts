@@ -5,6 +5,7 @@ import { AsyncSubject, BehaviorSubject } from 'rxjs';
 import { Game } from 'app/models/game.model';
 import { Socket } from 'ngx-socket-io';
 import { IoMessages } from '../../../io-messages';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,12 @@ export class GamesService {
     return this.games$.getValue();
   }
 
+  async loadGameInfo(gameId) {
+    await this.ready$.toPromise();
+    const game = new Game(await this.requester.load(`/games/${gameId}`));
+    return game;
+  }
+
   async listenGamesList() {
     await this.ready$.toPromise();
     this.socket.on(IoMessages.onGamesListUpdated, (games) => {
@@ -52,6 +59,36 @@ export class GamesService {
     return createdGame;
   }
 
+  async editGame(game: Game) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/edit`,
+      params: game,
+    });
+    return { success: true };
+  }
+
+  async addTeam(game: Game, team) {
+    await this.ready$.toPromise();
+    const addedTeam = await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/add_team`,
+      params: team,
+    });
+    return addedTeam;
+  }
+
+  async removeTeam(game: Game, team) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/remove_team`,
+      params: team,
+    });
+    return { success: true };
+  }
+
   async deleteGame(game: Game) {
     await this.ready$.toPromise();
     await this.requester.load({
@@ -59,5 +96,63 @@ export class GamesService {
       url: `/games/${game._id}/delete`,
     });
     return { success: true };
+  }
+
+  async assignRoundsToTeams(game: Game) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/assign_rounds_to_teams`,
+      params: game,
+    });
+    return { success: true };
+  }
+
+  async getInfoByCode(gameId: string, code: string) {
+    await this.ready$.toPromise();
+    const game = await this.requester.load(`/games/${gameId}/${code}`);
+    return game;
+  }
+
+  async updateRound(game: Game) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/update_round`,
+      params: { currentRound: game.currentRound },
+    });
+    return { success: true };
+  }
+
+  async updateState(game: Game) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/update_state`,
+      params: { state: game.state },
+    });
+    return { success: true };
+  }
+
+  async submitAnswer(game: Game, code: string) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/${code}/submit_answer`,
+      params: game,
+    });
+    return { success: true };
+  }
+
+  onGameRoundUpdated(gameId: string) {
+    return this.socket.fromEvent(IoMessages.onGameRoundUpdated).pipe(filter((e) => e.gameId == gameId));
+  }
+
+  onGameStateUpdated(gameId: string) {
+    return this.socket.fromEvent(IoMessages.onGameStateUpdated).pipe(filter((e) => e.gameId == gameId));
+  }
+
+  onAnswerSubmitted(gameId: string) {
+    return this.socket.fromEvent(IoMessages.onAnswerSubmitted).pipe(filter((e) => e.gameId == gameId));
   }
 }

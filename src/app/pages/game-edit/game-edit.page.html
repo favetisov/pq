@@ -12,14 +12,25 @@
           <game-form [game]="game"></game-form>
         </section>
         <section #footer>
-          <div class="buttons-row">
-            <button [disabled]="state.savingInfo" (click)="deleteGame()" class="delete-button">
+          <div class="buttons-row" *ngIf="!state.deleteConfirm">
+            <button [disabled]="state.savingInfo" (click)="state.deleteConfirm = true" class="delete-button">
               {{'GAMES.delete_game' | translate}}
             </button>
             <button [disabled]="game.state != GameState.NOT_STARTED || state.savingInfo" (click)="editGame()">
               {{'COMMON.save_changes' | translate}}
             </button>
           </div>
+          <ng-container *ngIf="state.deleteConfirm">
+            <div class="confirm-phrase">{{'GAMES.confirm_delete' | translate}}</div>
+            <div class="buttons-row">
+              <button (click)="state.deleteConfirm = false">
+                {{'COMMON.cancel' | translate}}
+              </button>
+              <button (click)="deleteGame()" class="delete-button">
+                {{'GAMES.delete_game' | translate}}
+              </button>
+            </div>
+          </ng-container>
         </section>
       </adm-card>
 
@@ -32,9 +43,9 @@
         <section #content>
           <ng-container *ngIf="game.teams.length; else noTeams">
             <adm-list>
-              <adm-list-item *ngFor="let team of game.teams" (click)="removeTeam(team)">
+              <adm-list-item *ngFor="let team of game.teams">
                 <div class="name">{{team.name}}</div>
-                <div class="action"><adm-icon name="close"></adm-icon></div>
+                <div class="action" (click)="removeTeam(team)"><adm-icon name="close"></adm-icon></div>
               </adm-list-item>
             </adm-list>
           </ng-container>
@@ -116,9 +127,12 @@
                   </td>
                   <td
                     class="round"
-                    *ngFor="let round of game.rounds; let idx = index"
+                    *ngFor="let round of team.rounds; let idx = index"
                     [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == idx"
                   >
+                    <span class="submitted-at" *ngIf="round.submittedTimestamp">
+                      {{formatTime(round.submittedTimestamp)}}</span
+                    >
                     <!--                    17:03:55-->
                     <!--                    <br />-->
                     <!--                    Очки: 3-->
@@ -167,7 +181,7 @@
               {{'GAMES.finish_game' | translate}}
             </button>
           </div>
-          <ng-container class="buttons-row" *ngIf="state.revertConfirm">
+          <ng-container *ngIf="state.revertConfirm">
             <div class="confirm-phrase">{{'GAMES.confirm_revert' | translate}}</div>
             <div class="buttons-row">
               <button (click)="state.revertConfirm = false">

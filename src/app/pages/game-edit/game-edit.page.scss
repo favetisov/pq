@@ -41,6 +41,10 @@
     }
     .action {
       margin-right: -10px;
+      transition: all 0.2s;
+      &:hover {
+        transform: scale(1.5);
+      }
     }
   }
 

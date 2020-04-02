@@ -7,4 +7,23 @@
   h2 {
     padding-top: 0;
   }
+  .game-not-started {
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  .game-finished {
+    padding: 20px;
+    font-size: 14px;
+    a {
+      margin-left: 5px;
+      color: var(--primary-color);
+    }
+  }
+
+  .answers-sent {
+    padding: 30px;
+    font-size: 14px;
+    text-align: center;
+  }
 }

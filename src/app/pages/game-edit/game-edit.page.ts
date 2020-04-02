@@ -3,8 +3,8 @@ import { Game, GameState } from 'app/models/game.model';
 import { GameFormComponent } from 'app/pages/games/game-form/game-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { notEmptyValidator } from 'app/tools/validators';
-import * as md5 from 'js-md5';
 import { GamesService } from 'app/services/games.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'game-edit-page',
@@ -19,6 +19,7 @@ export class GameEditPage implements OnInit {
     editingRound: false,
     addingTeamMode: false,
     revertConfirm: false,
+    deleteConfirm: false,
   };
 
   GameState = GameState;
@@ -61,11 +62,13 @@ export class GameEditPage implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private gamesService: GamesService) {}
 
   async ngOnInit() {
-    this.game = new Game({
-      _id: this.route.snapshot.paramMap.get('gameId'),
-      name: this.route.snapshot.paramMap.get('gameTitle'),
-    });
+    this.game = await this.gamesService.loadGameInfo(this.route.snapshot.paramMap.get('gameId'));
     if (!this.game.rounds.length) this.game.rounds = this.availableRounds.filter((r) => r.enabledByDefault);
+    if (this.game.teams.some((t) => !t.rounds)) this.assignRoundsToTeams();
+
+    this.gamesService.onAnswerSubmitted(this.game._id).subscribe((e: any) => {
+      this.game.teams.find((t) => t._id == e.teamId).rounds[e.round].submittedTimestamp = e.submittedTimestamp;
+    });
     this.state.loading = false;
   }
 
@@ -73,6 +76,7 @@ export class GameEditPage implements OnInit {
     if (await this.gameForm.isValid()) {
       this.state.savingInfo = true;
       try {
+        await this.gamesService.editGame(this.game);
         this.router.navigate(['/games']);
       } catch (e) {}
       this.state.savingInfo = false;
@@ -83,29 +87,32 @@ export class GameEditPage implements OnInit {
     if (await this.gameForm.isValid()) {
       this.state.savingInfo = true;
       try {
-        this.gamesService.deleteGame(this.game);
+        await this.gamesService.deleteGame(this.game);
         this.router.navigate(['/games']);
       } catch (e) {}
       this.state.savingInfo = false;
     }
   }
 
-  addTeam() {
+  async addTeam() {
     if (this.game.state !== GameState.NOT_STARTED) return;
     if (!this.newTeamName) return;
     this.state.editingTeam = true;
     try {
-      this.game.teams.push({ _id: '1', name: this.newTeamName, code: md5('1' + this.newTeamName), rounds: [] });
+      const team = await this.gamesService.addTeam(this.game, { name: this.newTeamName });
+      this.game.teams.push(team);
       this.newTeamName = '';
+      this.assignRoundsToTeams();
     } catch (e) {}
     this.state.editingTeam = false;
     this.state.addingTeamMode = false;
   }
 
-  removeTeam(team) {
+  async removeTeam(team) {
     if (this.game.state !== GameState.NOT_STARTED) return;
     this.state.editingTeam = true;
     try {
+      await this.gamesService.removeTeam(this.game, team);
       this.game.teams = this.game.teams.filter((t) => t._id != team._id);
     } catch (e) {}
     this.state.editingTeam = false;
@@ -129,7 +136,7 @@ export class GameEditPage implements OnInit {
     this.state.editingRound = false;
   }
 
-  assignRoundsToTeams() {
+  async assignRoundsToTeams() {
     this.game.teams.forEach((t) => {
       t.rounds = this.game.rounds.map((r) => ({
         roundId: r._id,
@@ -142,6 +149,7 @@ export class GameEditPage implements OnInit {
         })),
       }));
     });
+    await this.gamesService.assignRoundsToTeams(this.game);
   }
 
   calculateTeamScore(team) {
@@ -154,28 +162,38 @@ export class GameEditPage implements OnInit {
 
   startGame() {
     this.game.state = GameState.IN_PROGRESS;
+    this.gamesService.updateState(this.game);
   }
 
-  revertGame() {
+  async revertGame() {
     this.game.state = GameState.NOT_STARTED;
     this.game.currentRound = 0;
-    this.assignRoundsToTeams();
+    await this.assignRoundsToTeams();
+    await this.gamesService.updateState(this.game);
     this.state.revertConfirm = false;
   }
 
   finishGame() {
     this.game.state = GameState.FINISHED;
+    this.gamesService.updateState(this.game);
   }
 
   reopenGame() {
     this.game.state = GameState.IN_PROGRESS;
+    this.gamesService.updateState(this.game);
   }
 
   startNewRound() {
     this.game.currentRound++;
+    this.gamesService.updateRound(this.game);
   }
 
   toPrevRound() {
     this.game.currentRound--;
+    this.gamesService.updateRound(this.game);
+  }
+
+  formatTime(ts) {
+    return moment(ts).format('HH:mm:ss');
   }
 }

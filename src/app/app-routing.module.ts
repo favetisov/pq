@@ -28,7 +28,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'blanks/:gameId/:teamCode',
+    path: 'blanks/:gameId/:code',
     component: ClientFormPage,
     data: {
       breadcrumbs: [{ label: 'FORMS.answer_form', link: 'blanks/:gameId/:teamCode' }],
