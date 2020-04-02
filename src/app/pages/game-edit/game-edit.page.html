@@ -1,0 +1,206 @@
+<div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
+<ng-template #loaded>
+  <div class="wrapper">
+    <div class="column left">
+      <adm-card>
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">{{'GAMES.game_info' | translate}}</span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.savingInfo"></adm-spinner></div>
+        </h2>
+        <section #content>
+          <game-form [game]="game"></game-form>
+        </section>
+        <section #footer>
+          <div class="buttons-row">
+            <button [disabled]="state.savingInfo" (click)="deleteGame()" class="delete-button">
+              {{'GAMES.delete_game' | translate}}
+            </button>
+            <button [disabled]="game.state != GameState.NOT_STARTED || state.savingInfo" (click)="editGame()">
+              {{'COMMON.save_changes' | translate}}
+            </button>
+          </div>
+        </section>
+      </adm-card>
+
+      <adm-card *ngIf="!state.addingTeamMode" class="teams-card">
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">{{'TEAMS.teams' | translate}}</span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.editingTeam"></adm-spinner></div>
+        </h2>
+        <section #content>
+          <ng-container *ngIf="game.teams.length; else noTeams">
+            <adm-list>
+              <adm-list-item *ngFor="let team of game.teams" (click)="removeTeam(team)">
+                <div class="name">{{team.name}}</div>
+                <div class="action"><adm-icon name="close"></adm-icon></div>
+              </adm-list-item>
+            </adm-list>
+          </ng-container>
+          <ng-template #noTeams>
+            <div class="nothing-found">{{'GAMES.no_teams' | translate}}</div>
+          </ng-template>
+        </section>
+        <section #footer>
+          <div class="buttons-row">
+            <button [disabled]="game.state != GameState.NOT_STARTED" (click)="state.addingTeamMode = true">
+              {{'GAMES.add_team' | translate}}
+            </button>
+          </div>
+        </section>
+      </adm-card>
+
+      <adm-card *ngIf="state.addingTeamMode">
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">{{'GAMES.add_team' | translate}}</span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.editingTeam"></adm-spinner></div>
+        </h2>
+        <section>
+          <adm-element-container [validators]="validators.teamName" [label]="'TEAMS.title' | translate">
+            <input
+              adm-input-element
+              type="text"
+              [(ngModel)]="newTeamName"
+              [placeholder]="'TEAMS.title' | translate"
+              (keydown.enter)="addTeam()"
+            />
+          </adm-element-container>
+        </section>
+        <section #footer>
+          <div class="buttons-row">
+            <button [disabled]="state.editingTeam" (click)="state.addingTeamMode = false">
+              {{'COMMON.cancel' | translate}}
+            </button>
+            <button [disabled]="state.editingTeam" (click)="addTeam()">{{'GAMES.add_team' | translate}}</button>
+          </div>
+        </section>
+      </adm-card>
+    </div>
+    <div class="column center">
+      <adm-card class="desktop-card">
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">
+            {{'GAMES.desktop' | translate}}: {{('GAMES.STATES' | translate)[game.state]}}
+          </span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.savingInfo"></adm-spinner></div>
+        </h2>
+        <section>
+          <ng-container *ngIf="game.rounds.length && game.teams.length else noRoundsTeams">
+            <table>
+              <thead>
+                <tr>
+                  <td class="team-name">Команда</td>
+                  <td class="personal-link">Бланки</td>
+                  <td
+                    class="round"
+                    *ngFor="let round of game.rounds; let idx = index"
+                    [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == idx"
+                  >
+                    {{idx + 1}} тур
+                  </td>
+                  <td class="total">Итог</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let team of game.teams">
+                  <td class="team-name">
+                    {{team.name}}
+                  </td>
+                  <td class="personal-link">
+                    <a [href]="'/blanks/' + game._id +  '/' + team.code" target="_blank">
+                      <adm-icon name="link"></adm-icon>
+                    </a>
+                  </td>
+                  <td
+                    class="round"
+                    *ngFor="let round of game.rounds; let idx = index"
+                    [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == idx"
+                  >
+                    <!--                    17:03:55-->
+                    <!--                    <br />-->
+                    <!--                    Очки: 3-->
+                  </td>
+                  <td class="total">{{calculateTeamScore(team)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+          <ng-template #noRoundsTeams>
+            <div class="nothing-found">Добавьте команды и раунды</div>
+          </ng-template>
+        </section>
+        <section #footer>
+          <div class="buttons-row" *ngIf="!state.revertConfirm">
+            <button
+              *ngIf="game.state == GameState.NOT_STARTED"
+              (click)="startGame()"
+              [disabled]="!game.teams.length || !game.rounds.length"
+            >
+              {{'GAMES.start_game' | translate}}
+            </button>
+            <button
+              *ngIf="game.state == GameState.IN_PROGRESS"
+              (click)="state.revertConfirm = true"
+              class="delete-button"
+            >
+              {{'GAMES.revert_game' | translate}}
+            </button>
+            <button *ngIf="game.state == GameState.IN_PROGRESS && game.currentRound > 0" (click)="toPrevRound()">
+              {{'GAMES.to_prev_round' | translate}}
+            </button>
+            <button
+              *ngIf="game.state == GameState.IN_PROGRESS && game.currentRound < game.rounds.length - 1"
+              (click)="startNewRound()"
+            >
+              {{'GAMES.start_round' | translate}}
+            </button>
+            <button *ngIf="game.state == GameState.FINISHED" (click)="reopenGame()">
+              {{'GAMES.reopen_game' | translate}}
+            </button>
+            <button
+              *ngIf="game.state == GameState.IN_PROGRESS && game.currentRound == game.rounds.length - 1"
+              (click)="finishGame()"
+            >
+              {{'GAMES.finish_game' | translate}}
+            </button>
+          </div>
+          <ng-container class="buttons-row" *ngIf="state.revertConfirm">
+            <div class="confirm-phrase">{{'GAMES.confirm_revert' | translate}}</div>
+            <div class="buttons-row">
+              <button (click)="state.revertConfirm = false">
+                {{'COMMON.cancel' | translate}}
+              </button>
+              <button (click)="revertGame()" class="delete-button">
+                {{'GAMES.revert_game' | translate}}
+              </button>
+            </div>
+          </ng-container>
+        </section>
+      </adm-card>
+    </div>
+    <div class="column right">
+      <adm-card class="rounds-card">
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">{{'GAMES.rounds' | translate}}</span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.savingInfo"></adm-spinner></div>
+        </h2>
+        <section>
+          <adm-element-container *ngFor="let round of availableRounds">
+            <adm-checkbox
+              [value]="isRoundIncluded(round)"
+              (toggle)="toggleRound(round)"
+              [title]="round.name"
+              [disabled]="game.state != GameState.NOT_STARTED"
+              adm-checkbox-element
+            >
+            </adm-checkbox>
+          </adm-element-container>
+        </section>
+      </adm-card>
+    </div>
+  </div>
+</ng-template>

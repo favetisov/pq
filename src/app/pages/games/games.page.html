@@ -1,0 +1,50 @@
+<div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
+<ng-template #loaded>
+  <div class="wrapper">
+    <adm-card>
+      <h1>
+        <div class="spinner-container"></div>
+        <span style="flex: 1; text-align: center;">{{'GAMES.games' | translate}}</span>
+        <div class="spinner-container"></div>
+      </h1>
+      <section #content>
+        <ng-container *ngIf="(games$ | async).length else noGames">
+          <adm-list>
+            <adm-list-head [sort$]="sort$">
+              <adm-list-head-cell adm-list-cell="name" sortKey="name" class="name">
+                {{'GAMES.title' | translate}}
+              </adm-list-head-cell>
+              <adm-list-head-cell adm-list-cell="state" class="state">
+                {{'GAMES.state' | translate}}
+              </adm-list-head-cell>
+              <adm-list-head-cell adm-list-cell="teams" sortKey="teams" class="teams">
+                {{'TEAMS.teams' | translate}}
+              </adm-list-head-cell>
+              <adm-list-head-cell adm-list-cell="action" class="action"> </adm-list-head-cell>
+            </adm-list-head>
+            <adm-list-item *ngFor="let game of (games$ | async)" [routerLink]="[game._id, game.name]">
+              <div class="name">
+                {{game.name}}
+              </div>
+              <div class="state">
+                {{('GAMES.STATES' | translate)[game.state]}}
+              </div>
+              <div class="teams">
+                {{game.teams.length}}
+              </div>
+              <div class="action"><adm-icon name="chevron-right"></adm-icon></div>
+            </adm-list-item>
+          </adm-list>
+        </ng-container>
+        <ng-template #noGames>
+          <div class="nothing-found">{{'GAMES.no_games_yet' | translate}}</div>
+        </ng-template>
+      </section>
+      <section #footer>
+        <div class="buttons-row small">
+          <button routerLink="new">{{'GAMES.add_game' | translate}}</button>
+        </div>
+      </section>
+    </adm-card>
+  </div>
+</ng-template>

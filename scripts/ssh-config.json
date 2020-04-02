@@ -1,0 +1,6 @@
+{
+  "sshKeyPath": "/home/fedor/.ssh/id_rsa",
+  "server": "footballista",
+  "sshUser": "fedor",
+  "comment": "specify path to ssh key (user deploy) and server ssh alias (with ip and port preset)"
+}

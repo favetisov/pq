@@ -1,0 +1,79 @@
+:host {
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 1px;
+    thead {
+      td {
+        color: var(--primary-color);
+        font-size: 13px;
+        border-bottom: 1px solid var(--border-color-middle);
+        padding: 15px;
+      }
+      .letter {
+        font-size: 11px;
+      }
+    }
+    tr:not(:last-of-type) td {
+      border-bottom: 1px solid var(--border-color-middle);
+    }
+    td {
+      &:not(:last-of-type) {
+        border-right: 1px solid var(--border-color-middle);
+      }
+    }
+
+    .tour {
+      width: 30px;
+      text-align: center;
+      color: var(--primary-color);
+    }
+    .letter {
+      text-align: center;
+    }
+
+    .explanation {
+      width: 100%;
+      text-align: left;
+    }
+
+    tbody {
+      .tour {
+        font-weight: 600;
+      }
+      .letter {
+        text-align: center;
+        input {
+          text-align: center;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 11px;
+      background: transparent;
+      box-sizing: border-box;
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      .tour {
+        width: 15px;
+      }
+      .letter {
+        min-width: 80px;
+      }
+      thead td {
+        padding: 10px;
+      }
+      input {
+        padding: 10px;
+      }
+    }
+  }
+}

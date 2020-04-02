@@ -1,0 +1,94 @@
+:host {
+  text-align: center;
+  display: block;
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    .column {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      &.left {
+        max-width: 250px;
+        adm-card {
+          margin: 0;
+          min-width: 250px;
+          margin-bottom: 5px;
+        }
+      }
+      &.center {
+        max-width: 700px;
+        margin: 0 5px;
+        adm-card {
+          margin: 0;
+          min-width: 700px;
+        }
+      }
+      &.right {
+        max-width: 250px;
+        adm-card {
+          margin: 0;
+          min-width: 250px;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .teams-card {
+    .name {
+      justify-content: flex-start;
+    }
+    .action {
+      margin-right: -10px;
+    }
+  }
+
+  .desktop-card {
+    section {
+      table {
+        border-collapse: separate;
+        border-spacing: 1px;
+        padding: 10px;
+        thead {
+          td {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color-middle);
+          }
+        }
+        tr:not(:last-of-type) td {
+          border-bottom: 1px solid var(--border-color-middle);
+        }
+        td {
+          &:not(:last-of-type) {
+            border-right: 1px solid var(--border-color-middle);
+          }
+          padding: 10px;
+          text-align: center;
+        }
+        .team-name {
+          text-align: left;
+          min-width: 100px;
+        }
+        .personal-link {
+          --height: 15px;
+          --width: 15px;
+          --fill: var(--primary-color);
+        }
+        .round {
+          padding: 5px 0;
+          width: 75px;
+          line-height: 13px;
+          &.active {
+            background: rgba(255, 255, 0, 0.1);
+          }
+        }
+        .total {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

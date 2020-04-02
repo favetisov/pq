@@ -1,0 +1,87 @@
+:host {
+  display: flex;
+  align-items: center;
+  position: relative;
+  ::ng-deep input {
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    padding-left: 10px;
+    font-size: 11px;
+    background: transparent;
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+  }
+  ::ng-deep textarea {
+    width: 100%;
+    height: 300px;
+    padding: 10px 0;
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+  }
+  .error-container {
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    text-transform: uppercase;
+    font-size: 9px;
+    .error {
+      color: rgba(240, 65, 65, 0.81);
+    }
+  }
+  .spinner-wrapper {
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    display: flex;
+    adm-spinner {
+      --size: 7px;
+      --color: var(--ion-color-secondary-shade);
+      margin-right: 5px;
+    }
+  }
+
+  .clear-button {
+    --fill: rgba(0, 0, 0, 0.4);
+    --height: 7px;
+    --width: 7px;
+    position: absolute;
+    height: 100%;
+    width: 30px;
+    right: -5px;
+  }
+  &.invalid .clear-button {
+    --fill: #f04141;
+  }
+  adm-spinner {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    padding: 0 5px;
+    --size: 3px;
+    --color: var(--border-color);
+  }
+
+  .label {
+    text-transform: lowercase;
+    color: rgba(67, 131, 147, 0.8);
+    font-size: 10px;
+    margin-left: 5px;
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 41px;
+    margin-bottom: -1px;
+  }
+  &.invalid .label {
+    color: rgba(240, 65, 65, 0.6);
+  }
+
+  .icon {
+    --height: 15px;
+    --width: 15px;
+    --fill: rgba(67, 131, 147, 0.8);
+    margin-left: 5px;
+  }
+}

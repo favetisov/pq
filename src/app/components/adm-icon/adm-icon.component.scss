@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+  vertical-align: middle;
+  height: var(--height);
+  width: var(--width);
+  ::ng-deep svg {
+    height: var(--height);
+    width: var(--width);
+    fill: var(--fill);
+    vertical-align: top;
+  }
+}

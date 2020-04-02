@@ -1,0 +1,52 @@
+:host {
+  height: 36px;
+  line-height: 36px;
+  padding-top: 3px;
+  font-size: 12px;
+  position: relative;
+  text-transform: uppercase;
+  vertical-align: top;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'KabelCTT Demi';
+
+  div {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    line-height: 36px;
+    &:not(.fullscreen) {
+      padding: 0;
+    }
+  }
+
+  adm-icon {
+    --height: 7px;
+    --width: 7px;
+    --fill: var(--primary-color);
+    //--fill: white;
+    margin-top: -3px;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  a {
+    //color: #ffffff;
+    color: var(--primary-color);
+    font-family: 'KabelCTT Medium';
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    background: var(--primary-color);
+    box-shadow: 0px 2px rgba(0, 0, 0, 0.2);
+    a {
+      color: white;
+    }
+  }
+}

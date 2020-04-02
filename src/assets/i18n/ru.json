@@ -1,0 +1,60 @@
+{
+  "COMMON": {
+    "save_changes": "Сохранить изменения",
+    "image_load_failed": "Ошибка при загрузке фото",
+    "cancel": "Отмена"
+  },
+  "ERROR": {
+    "server_error": "Ошибка сервера",
+    "connection_lost": "Соединение с сервером потеряно",
+    "not_authorized": "Ошибка авторизации"
+  },
+  "VALIDATORS": {
+    "field_cannot_be_empty": "Поле не может быть пустым",
+    "invalid_date_format": "Дата должна соответствовать следующему формату: 'DD.MM.YYYY'",
+    "invalid_vk_format": "Адрес должен соответствовать следующему формату: 'https://vk.com/your_link'",
+    "invalid_fb_format": "Адрес должен соответствовать следующему формату: 'https://www.facebook.com/your.link'",
+    "invalid_ig_format": "Адрес должен соответствовать следующему формату: 'https://www.instagram.com/your_link'",
+    "incorrect_phone_format": "Некорректный формат телефона",
+    "incorrect_email_format": "Некорректный формат email",
+    "incorrect_youtube_address": "допускаются только ссылки на Youtube",
+    "should_be_fb_vk": "Ссылка должна вести на фотоальбом Facebook или VK",
+    "phone_should_start_plus": "Номер телефона должен начинаться со знака плюс",
+    "should_be_web_link": "Ссылка должна начинаться с http[s]"
+  },
+  "GAMES": {
+    "games": "Игры",
+    "title": "Название",
+    "no_games_yet": "Пока ни одной игры",
+    "add_game": "Добавить игру",
+    "new_game": "Новая игра",
+    "delete_game": "Удалить игру",
+    "game_info": "Данные игры",
+    "desktop": "Игровой стол",
+    "add_team": "Добавить команду",
+    "no_teams": "Пока ни одной команды",
+    "rounds": "Туры",
+    "start_game": "Начать игру",
+    "revert_game": "Сбросить игру",
+    "finish_game": "Завершить игру",
+    "reopen_game": "Переоткрыть игру",
+    "confirm_revert": "Отменить весь прогресс в игре? Все ответы и очки команд будут потеряны",
+    "confirm_finish": "Завершить игру? Любые действия после этого будут невозможны",
+    "state": "Статус",
+    "start_round": "Начать следующий раунд",
+    "to_prev_round": "Вернуться в прошлый раунд",
+    "STATES": [
+      "Игра не началась", "Игра идёт", "Игра завершена"
+    ]
+  },
+  "TEAMS": {
+    "teams": "Команды",
+    "title": "Название"
+  },
+  "FORMS": {
+    "answer_form": "Бланки ответов",
+    "submit": "Отправить ответы",
+    "confirm_submit": "Отправить ответы? После этого внесение изменений будет невозможно",
+    "answer_text": "Текст ответа"
+  }
+}

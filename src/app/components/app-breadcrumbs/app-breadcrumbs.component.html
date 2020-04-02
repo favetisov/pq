@@ -1,0 +1,11 @@
+<ng-container *ngIf="true; else mobile">
+  <div>
+    <ng-container *ngFor="let bc of breadcrumbs; let last = last">
+      <a [routerLink]="bc.link">{{ bc.label | translate }}</a>
+      <adm-icon name="chevron-right" *ngIf="!last"></adm-icon>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-template #mobile>
+  {{ breadcrumbs[breadcrumbs.length - 1]?.label | translate }}
+</ng-template>

@@ -1,0 +1,5 @@
+{
+  "sshKeyPath": "/home/favetisvo/.ssh/deploy_rsa",
+  "server": "dogs",
+  "comment": "specify path to ssh key (user deploy) and server ssh alias (with ip and port preset)"
+}

@@ -1,0 +1,41 @@
+:host {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  padding-left: 10px;
+  &:hover {
+    button {
+      background: var(--border-color-light);
+    }
+  }
+  button {
+    height: 16px;
+    width: 16px;
+    border: 1px solid var(--border-color);
+    margin-right: 7.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease-in-out;
+    adm-icon {
+      --height: 10px;
+      --width: 10px;
+      --fill: var(--border-color);
+      opacity: 0;
+      transition: opacity 0.1s ease-in-out;
+    }
+    &.checked {
+      background: var(--border-color-light);
+      adm-icon {
+        opacity: 1;
+      }
+    }
+  }
+  label {
+    user-select: none;
+  }
+}

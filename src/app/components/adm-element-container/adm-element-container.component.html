@@ -1,0 +1,21 @@
+<label *ngIf="(input || select || date) && (label || icon)" class="label-wrapper">
+  <div class="label" *ngIf="label">{{ label }}</div>
+  <adm-icon *ngIf="!label && icon" [name]="icon" class="icon"></adm-icon>
+</label>
+
+<ng-content></ng-content>
+
+<div class="error-container">
+  <div class="error">{{ validationError | translate }}</div>
+</div>
+
+<ng-container *ngIf="input">
+  <ng-container *ngIf="state != 'validating'; else validating">
+    <!--<button class="clear-button" (click)="clear()" *ngIf="![null, undefined].includes(input.value | async)">-->
+    <!--<adm-icon name="close"></adm-icon>-->
+    <!--</button>-->
+  </ng-container>
+  <ng-template #validating>
+    <adm-spinner></adm-spinner>
+  </ng-template>
+</ng-container>

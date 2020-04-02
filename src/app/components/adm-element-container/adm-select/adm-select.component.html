@@ -1,0 +1,41 @@
+<div class="value-wrapper">
+  <div class="value" (click)="open$.next(true)" [class.open]="open$ | async">
+    <ng-container [ngTemplateOutlet]="labelTemplate" [ngTemplateOutletContext]="{ $implicit: value }"> </ng-container>
+  </div>
+  <button class="clear-button" (click)="select(null)" *ngIf="!isNil(value) && hasClearButton">
+    <adm-icon name="close"></adm-icon>
+  </button>
+  <button class="select-button" [class.open]="open$ | async" (click)="open$.next(!open$.getValue())">
+    <adm-icon name="chevron-down"></adm-icon>
+  </button>
+</div>
+
+<div class="input-wrapper" [class.open]="open$ | async" [hidden]="!(open$ | async)">
+  <input
+    type="text"
+    #input
+    [(ngModel)]="query"
+    [placeholder]="'COMMON.search' | translate"
+    (blur)="onInputBlur()"
+    (focus)="focus.next()"
+    (ngModelChange)="search()"
+    (keydown.arrowDown)="increaseOptionIdx()"
+    (keydown.arrowUp)="decreaseOptionIdx()"
+    (keydown.enter)="selectByEnter()"
+  />
+</div>
+
+<div class="options-wrapper" [hidden]="!(open$ | async)">
+  <div
+    class="option"
+    *ngFor="let option of foundOptions; let i = index"
+    (click)="select(option)"
+    [class.selected]="selectedOptionIdx == i"
+  >
+    <ng-container [ngTemplateOutlet]="optionTemplate" [ngTemplateOutletContext]="{ $implicit: option }"></ng-container>
+  </div>
+
+  <div class="option nothing-found" *ngIf="!foundOptions?.length">
+    {{ 'COMMON.nothing_found' | translate }}
+  </div>
+</div>

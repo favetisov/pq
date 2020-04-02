@@ -1,0 +1,41 @@
+:host {
+  color: var(--primary-color);
+  flex: 1;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  display: block;
+
+  adm-rotating-chevron {
+    width: 0;
+    position: relative;
+    ::ng-deep adm-icon {
+      left: 5px;
+      position: absolute;
+      top: 2.5px;
+    }
+  }
+
+  adm-rotating-chevron ::ng-deep adm-icon {
+    opacity: 0;
+    --fill: var(--primary-color);
+    --height: 7px;
+    --width: 7px;
+  }
+
+  &.disabled adm-rotating-chevron ::ng-deep adm-icon {
+    display: none;
+    opacity: 0 !important;
+  }
+
+  &.clear:hover adm-rotating-chevron ::ng-deep adm-icon {
+    opacity: 0.3 !important;
+  }
+  &.down adm-rotating-chevron ::ng-deep adm-icon {
+    opacity: 1 !important;
+  }
+  &.up adm-rotating-chevron ::ng-deep adm-icon {
+    opacity: 1 !important;
+  }
+}

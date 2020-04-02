@@ -1,0 +1,30 @@
+:host {
+  background: #dc4246;
+  display: block;
+  padding: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(-100px);
+  z-index: 10000000;
+  .wrapper {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.8em;
+    font-weight: 700 !important;
+    color: rgba(255, 255, 255, 0.9);
+    display: block;
+    box-sizing: border-box;
+    ::ng-deep .border {
+      border-color: white;
+      &.lt,
+      &.rt {
+        display: none;
+      }
+    }
+  }
+}

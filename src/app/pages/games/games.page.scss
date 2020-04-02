@@ -1,0 +1,13 @@
+:host {
+  .wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .name {
+    justify-content: flex-start;
+    text-align: left;
+  }
+  .teams {
+    max-width: 50px;
+  }
+}

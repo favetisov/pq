@@ -1,0 +1,40 @@
+<div class="control-buttons" *ngIf="state == 'loaded'">
+  <button (click)="rotateLeft()" class="rotate-button"><adm-icon name="rotate-left"></adm-icon></button>
+  <button (click)="rotateRight()" class="rotate-button"><adm-icon name="rotate-right"></adm-icon></button>
+  <div style="flex: 1;"></div>
+  <button (click)="clean()"><adm-icon name="close"></adm-icon></button>
+</div>
+
+<input
+  type="file"
+  (change)="onFileChanged($event)"
+  (dragover)="inputDragover = true"
+  (dragleave)="inputDragover = false"
+  (drop)="onDrop()"
+  #fileInput
+/>
+
+<div class="frame" *ngIf="state == 'clear'">{{ 'COMMON.click_or_drag_to_add_photo' | translate }}</div>
+
+<div class="spinner-container" *ngIf="state == 'loading'">
+  <adm-spinner></adm-spinner>
+</div>
+
+<div class="error" *ngIf="state == 'failed'">{{ 'COMMON.image_load_failed' | translate }}</div>
+
+<div class="image-cropper-wrapper" *ngIf="image64">
+  <image-cropper
+    [imageBase64]="image64"
+    [class.displayed]="state == 'loaded'"
+    [maintainAspectRatio]="maintainAspectRatio"
+    [aspectRatio]="aspectRatio"
+    [resizeToWidth]="resizeToWidth"
+    [cropperMinWidth]="minWidth"
+    imageQuality="100"
+    format="options.format"
+    outputType="base64"
+    (imageCropped)="onCrop($event)"
+    (imageLoaded)="onLoad()"
+    (loadImageFailed)="onLoadFailed()"
+  ></image-cropper>
+</div>

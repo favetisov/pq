@@ -1,0 +1,18 @@
+<div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
+<ng-template #loaded>
+  <adm-card>
+    <h1>
+      <div class="spinner-container"></div>
+      <span style="flex: 1; text-align: center;">{{'GAMES.new_game' | translate}}</span>
+      <div class="spinner-container"><adm-spinner *ngIf="state.saving"></adm-spinner></div>
+    </h1>
+    <section #content>
+      <game-form [game]="game"></game-form>
+    </section>
+    <section #footer>
+      <div class="buttons-row">
+        <button [disabled]="state.saving" (click)="createGame()">{{'COMMON.save_changes' | translate}}</button>
+      </div>
+    </section>
+  </adm-card>
+</ng-template>

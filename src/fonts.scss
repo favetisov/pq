@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'Roboto Font';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/Gilroy-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/assets/fonts/Gilroy-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto Font';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'KabelCTT Medium';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/KabelC-Medium.otf');
+}
+@font-face {
+  font-family: 'KabelCTT Demi';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/KabelC-Demi.otf');
+}
+@font-face {
+  font-family: '17225';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/17225.otf');
+}
+
+@font-face {
+  font-family: 'Intro';
+  src: url('/assets/fonts/intro/Intro-Regular.eot');
+  src: local('Intro Regular'), local('Intro-Regular'),
+    url('/assets/fonts/intro/Intro-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/intro/Intro-Regular.woff') format('woff'),
+    url('/assets/fonts/intro/Intro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Intro';
+  src: url('/assets/fonts/intro/Intro-Light.eot');
+  src: local('Intro Light'), local('Intro-Light'),
+    url('/assets/fonts/intro/Intro-Light.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/intro/Intro-Light.woff') format('woff'),
+    url('/assets/fonts/intro/Intro-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Intro Book';
+  src: url('/assets/fonts/intro/Intro-Book.eot');
+  src: local('Intro Book'), local('Intro-Book'),
+    url('/assets/fonts/intro/Intro-Book.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/intro/Intro-Book.woff') format('woff'),
+    url('/assets/fonts/intro/Intro-Book.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

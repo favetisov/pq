@@ -1,1 +1,182 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'fonts';
+@import 'variables';
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Gilroy', 'Roboto', sans-serif;
+  outline: none;
+  border: none;
+  color: var(--center-font);
+  -webkit-tap-highlight-color: transparent;
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+html,
+body,
+#wrapper,
+app-root,
+router-outlet {
+  height: 100%;
+  line-height: 1;
+}
+
+input[disabled] {
+  background: transparent;
+}
+
+body {
+  position: relative;
+  background: rgba(67, 131, 146, 0.07);
+}
+
+button {
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:not(:disabled):hover {
+    transform: scale(1.05);
+  }
+}
+
+app-root,
+app-toggling-layout {
+  height: 100vw;
+  width: 100vw;
+}
+
+@keyframes delayDisplay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-loader {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: 0.3s linear 1s forwards delayDisplay;
+  adm-spinner {
+    --size: 18px;
+    --color: var(--border-color-middle);
+  }
+}
+
+.mobile {
+  .page-loader {
+    margin-top: 150px;
+    //--color: rgba(255, 255, 255, 0.45);
+    --color: rgba(18, 90, 92, 0.8);
+    --size: 11px;
+  }
+}
+
+cdk-virtual-scroll-viewport {
+  max-height: 100vh;
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+    padding: 10px 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    //background-color: var(--border-color-middle);
+    background-color: rgba(22, 107, 96, 0.2);
+  }
+}
+
+section {
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+    padding: 10px 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    //background-color: var(--border-color-middle);
+    background-color: rgba(22, 107, 96, 0.2);
+  }
+}
+
+.cdk-overlay-container {
+  .cdk-overlay-pane {
+    max-width: 100vw !important;
+  }
+  .mat-dialog-container {
+    padding: 0;
+  }
+}
+.nothing-found {
+  * {
+    color: var(--center-font-light);
+  }
+  padding: 20px;
+  text-align: center;
+}
+
+virtual-scroller {
+  width: 100%;
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+    padding: 10px 0;
+  }
+  &::-webkit-scrollbar-thumb {
+    //background-color: var(--border-color-middle);
+    background-color: rgba(22, 107, 96, 0.2);
+  }
+}
+
+.list-element {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+  background: white;
+  & > div {
+    flex: 1;
+    text-align: center;
+  }
+
+  adm-flag {
+    height: 15px;
+    margin-right: 5px;
+  }
+
+  .status {
+    max-width: 50px;
+  }
+  .order {
+    max-width: 55px;
+  }
+
+  .name {
+    text-align: left;
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+  }
+
+  .action {
+    max-width: 20px;
+    --height: 10px;
+    --width: 10px;
+    --fill: var(--primary-color);
+    opacity: 0.1;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  adm-card {
+    margin: 5px !important;
+    width: calc(100% - 10px) !important;
+    min-width: calc(100% - 10px) !important;
+  }
+}

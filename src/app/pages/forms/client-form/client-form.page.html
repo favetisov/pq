@@ -1,0 +1,38 @@
+<div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
+<ng-template #loaded>
+  <div class="wrapepr">
+    <adm-card>
+      <h1>
+        <div class="spinner-container"></div>
+        <span style="flex: 1; text-align: center;">Тур №1. "Снова в школу"</span>
+        <div class="spinner-container"></div>
+      </h1>
+      <h2><span>Команда "Святые Патрики"</span></h2>
+      <section>
+        <!--        <client-school-round></client-school-round>-->
+        <!--        <client-film-round></client-film-round>-->
+        <!--        <client-literature-round></client-literature-round>-->
+        <!--        <client-quatro-round></client-quatro-round>-->
+        <client-word-round></client-word-round>
+      </section>
+      <section>
+        <div class="buttons-row" *ngIf="!state.submitConfirm">
+          <button (click)="state.submitConfirm = true" [disabled]="state.submitting">
+            {{'FORMS.submit' | translate}}
+          </button>
+        </div>
+        <ng-container *ngIf="state.submitConfirm">
+          <div class="confirm-phrase">{{'FORMS.confirm_submit' | translate}}</div>
+          <div class="buttons-row">
+            <button (click)="state.submitConfirm = false" [disabled]="state.submitting">
+              {{'COMMON.cancel' | translate}}
+            </button>
+            <button (click)="submit()" [disabled]="state.submitting">
+              {{'FORMS.submit' | translate}}
+            </button>
+          </div>
+        </ng-container>
+      </section>
+    </adm-card>
+  </div>
+</ng-template>
