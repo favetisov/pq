@@ -1,0 +1,51 @@
+<div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
+<ng-template #loaded>
+  <div class="wrapper">
+    <adm-card>
+      <h1>
+        <div class="spinner-container"></div>
+        <span style="flex: 1; text-align: center;"
+          >Тур №{{game.currentRound + 1}}. "{{game.rounds[game.currentRound].name}}"</span
+        >
+        <div class="spinner-container"><adm-spinner *ngIf="state.evaluating"></adm-spinner></div>
+      </h1>
+      <div class="submitted-time" *ngIf="round.submittedTimestamp">
+        Бланк сдан {{formatTime(round.submittedTimestamp)}}
+      </div>
+      <h2><span>Команда "{{team.name}}"</span></h2>
+      <section>
+        <admin-school-round *ngIf="game.rounds[game.currentRound]._id == 0" [round]="round"></admin-school-round>
+        <admin-film-round *ngIf="game.rounds[game.currentRound]._id == 1" [round]="round"></admin-film-round>
+        <admin-literature-round
+          *ngIf="game.rounds[game.currentRound]._id == 2"
+          [round]="round"
+        ></admin-literature-round>
+        <admin-quatro-round *ngIf="game.rounds[game.currentRound]._id == 4" [round]="round"></admin-quatro-round>
+        <admin-word-round *ngIf="game.rounds[game.currentRound]._id == 5" [round]="round"></admin-word-round>
+      </section>
+      <section>
+        <ng-container *ngIf="!state.confirmRevert">
+          <div class="buttons-row">
+            <button (click)="state.confirmRevert = true" [disabled]="state.evaluating" class="delete-button">
+              {{'FORMS.revert_answers' | translate}}
+            </button>
+            <button (click)="evaluate()" [disabled]="state.evaluating">
+              {{'FORMS.evaluate' | translate}}
+            </button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="state.confirmRevert">
+          <div class="confirm-phrase">{{'GAMES.confirm_delete' | translate}}</div>
+          <div class="buttons-row">
+            <button (click)="state.confirmRevert = false">
+              {{'COMMON.cancel' | translate}}
+            </button>
+            <button (click)="revertAnswers()" class="delete-button">
+              {{'FORMS.revert_answers' | translate}}
+            </button>
+          </div>
+        </ng-container>
+      </section>
+    </adm-card>
+  </div>
+</ng-template>

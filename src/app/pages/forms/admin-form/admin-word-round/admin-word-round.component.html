@@ -1,0 +1,45 @@
+<table>
+  <thead>
+    <tr>
+      <td class="number">Вопрос</td>
+      <td class="answer">Текст ответа</td>
+      <td class="check">Результат</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let roundNumber of [0, 1, 2, 3, 4, 5]">
+      <td class="number">{{ roundNumber + 1 }}</td>
+      <td class="answer">{{ round.fields[roundNumber].first }}</td>
+      <td class="check">
+        <adm-element-container>
+          <adm-checkbox [value]="checkmarks[roundNumber]" (toggle)="toggleCheckmark(roundNumber)" adm-checkbox-element>
+          </adm-checkbox>
+        </adm-element-container>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <h5><span>Слово:</span></h5>
+      </td>
+    </tr>
+    <tr *ngFor="let roundNumber of [6]">
+      <td class="number">{{ roundNumber + 1 }}</td>
+      <td class="answer">{{ round.fields[roundNumber].first }}</td>
+      <td class="check">
+        <adm-element-container>
+          <adm-checkbox [value]="checkmarks[roundNumber]" (toggle)="toggleCheckmark(roundNumber)" adm-checkbox-element>
+          </adm-checkbox>
+        </adm-element-container>
+      </td>
+    </tr>
+
+    <tr class="total">
+      <td colspan="2"><b>Итого</b></td>
+      <td class="check">
+        <adm-element-container>
+          <input adm-input-element type="text" [(ngModel)]="round.score" [placeholder]="0" />
+        </adm-element-container>
+      </td>
+    </tr>
+  </tbody>
+</table>

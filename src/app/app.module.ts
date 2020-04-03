@@ -51,6 +51,11 @@ import { ClientWordRoundComponent } from 'app/pages/forms/client-form/client-wor
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { AppErrorHandlerComponent } from 'app/components/app-error-handler/app-error-handler.component';
 import { IonicStorageModule } from '@ionic/storage';
+import { AdminSchoolRoundComponent } from 'app/pages/forms/admin-form/admin-school-round/admin-school-round.component';
+import { AdminFilmRoundComponent } from 'app/pages/forms/admin-form/admin-film-round/admin-film-round.component';
+import { AdminLiteratureRoundComponent } from 'app/pages/forms/admin-form/admin-literature-round/admin-literature-round.component';
+import { AdminQuatroRoundComponent } from 'app/pages/forms/admin-form/admin-quatro-round/admin-quatro-round.component';
+import { AdminWordRoundComponent } from 'app/pages/forms/admin-form/admin-word-round/admin-word-round.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3019', options: {} };
 
@@ -98,6 +103,11 @@ const initServices = (translateService: TranslateService) => {
     ClientQuatroRoundComponent,
     ClientWordRoundComponent,
     AppErrorHandlerComponent,
+    AdminSchoolRoundComponent,
+    AdminFilmRoundComponent,
+    AdminLiteratureRoundComponent,
+    AdminQuatroRoundComponent,
+    AdminWordRoundComponent,
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AsyncSubject, BehaviorSubject } from 'rxjs';
 import { GamesService } from 'app/services/games.service';
 import { takeUntil, filter } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import isNil from 'lodash-es/isNil';
   templateUrl: './games.page.html',
   styleUrls: ['./games.page.scss'],
 })
-export class GamesPage implements OnInit {
+export class GamesPage implements OnInit, OnDestroy {
   state = {
     loading: true,
   };

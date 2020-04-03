@@ -16,9 +16,12 @@ export class Game extends AbstractModel {
     name: string;
     code: string;
     rounds: Array<{
-      roundId: number;
+      _id: number;
+      name: string;
       submittedTimestamp: number;
-      fields: Array<{ fieldId: number; first: string; second: string; points: number }>;
+      evaluated: boolean;
+      score: number;
+      fields: Array<{ fieldId: number; first: string; second: string; score: number }>;
     }>;
   }> = [];
   rounds: Array<{

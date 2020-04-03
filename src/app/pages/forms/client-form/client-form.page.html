@@ -1,6 +1,6 @@
 <div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
 <ng-template #loaded>
-  <div class="wrapepr">
+  <div class="wrapper">
     <div class="game-not-started" *ngIf="game.state == GameState.NOT_STARTED">
       Игра ещё не началась. Бланки ответов станут доступны чуть позже.
     </div>
@@ -20,11 +20,14 @@
       </h1>
       <h2><span>Команда "{{team.name}}"</span></h2>
       <section>
-        <client-school-round *ngIf="game.rounds[game.currentRound]._id == 0"></client-school-round>
-        <client-film-round *ngIf="game.rounds[game.currentRound]._id == 1"></client-film-round>
-        <client-literature-round *ngIf="game.rounds[game.currentRound]._id == 2"></client-literature-round>
-        <client-quatro-round *ngIf="game.rounds[game.currentRound]._id == 4"></client-quatro-round>
-        <client-word-round *ngIf="game.rounds[game.currentRound]._id == 5"></client-word-round>
+        <client-school-round *ngIf="game.rounds[game.currentRound]._id == 0" [round]="round"></client-school-round>
+        <client-film-round *ngIf="game.rounds[game.currentRound]._id == 1" [round]="round"></client-film-round>
+        <client-literature-round
+          *ngIf="game.rounds[game.currentRound]._id == 2"
+          [round]="round"
+        ></client-literature-round>
+        <client-quatro-round *ngIf="game.rounds[game.currentRound]._id == 4" [round]="round"></client-quatro-round>
+        <client-word-round *ngIf="game.rounds[game.currentRound]._id == 5" [round]="round"></client-word-round>
       </section>
       <section>
         <ng-container *ngIf="!round.submittedTimestamp">

@@ -3,4 +3,5 @@ export enum IoMessages {
   onGameRoundUpdated = 'onGameRoundUpdated',
   onGameStateUpdated = 'onGameStateUpdated',
   onAnswerSubmitted = 'onAnswerSubmitter',
+  onAnswerEvaluated = 'onAnswerEvaluated',
 }

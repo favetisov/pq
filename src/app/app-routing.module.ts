@@ -4,6 +4,7 @@ import { GamesPage } from './pages/games/games.page';
 import { GameNewPage } from './pages/games/game-new/game-new.page';
 import { GameEditPage } from 'app/pages/game-edit/game-edit.page';
 import { ClientFormPage } from 'app/pages/forms/client-form/client-form.page';
+import { AdminFormPage } from 'app/pages/forms/admin-form/admin-form.page';
 
 const routes: Routes = [
   { path: 'games', component: GamesPage, data: { breadcrumbs: [{ label: 'GAMES.games', link: 'games' }] } },
@@ -32,6 +33,17 @@ const routes: Routes = [
     component: ClientFormPage,
     data: {
       breadcrumbs: [{ label: 'FORMS.answer_form', link: 'blanks/:gameId/:teamCode' }],
+    },
+  },
+  {
+    path: 'evaluate/:gameId/:gameTitle/:code/:roundId',
+    component: AdminFormPage,
+    data: {
+      breadcrumbs: [
+        { label: 'GAMES.games', link: 'games' },
+        { label: ':gameTitle', link: 'games/:gameId/:gameTitle' },
+        { label: 'FORMS.evaluate_form', link: 'evaluate/:gameId/:teamCode/:roundId' },
+      ],
     },
   },
 ];

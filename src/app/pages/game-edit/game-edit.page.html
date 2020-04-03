@@ -130,14 +130,17 @@
                     *ngFor="let round of team.rounds; let idx = index"
                     [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == idx"
                   >
-                    <span class="submitted-at" *ngIf="round.submittedTimestamp">
-                      {{formatTime(round.submittedTimestamp)}}</span
+                    <a
+                      [href]="'/evaluate/' + game._id +  '/' + game.name + '/' + team.code + '/' + round._id"
+                      target="_blank"
+                      *ngIf="round.submittedTimestamp"
                     >
-                    <!--                    17:03:55-->
-                    <!--                    <br />-->
-                    <!--                    Очки: 3-->
+                      <b>{{round.evaluated ? round.score : '?'}}</b>
+                    </a>
                   </td>
-                  <td class="total">{{calculateTeamScore(team)}}</td>
+                  <td class="total">
+                    {{calculateTeamScore(team)}}
+                  </td>
                 </tr>
               </tbody>
             </table>

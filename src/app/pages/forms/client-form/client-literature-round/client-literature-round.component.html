@@ -7,58 +7,18 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td class="tour">1</td>
+    <tr *ngFor="let roundNumber of [0, 1, 2, 3, 4, 5]">
+      <td class="tour">{{ roundNumber + 1 }}</td>
       <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Персонаж'" />
+        <input adm-input-element type="text" [(ngModel)]="round.fields[roundNumber].first" [placeholder]="'Персонаж'" />
       </td>
       <td class="book">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Название произведения'" />
-      </td>
-    </tr>
-    <tr>
-      <td class="tour">2</td>
-      <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Персонаж'" />
-      </td>
-      <td class="book">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Название произведения'" />
-      </td>
-    </tr>
-    <tr>
-      <td class="tour">3</td>
-      <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Персонаж'" />
-      </td>
-      <td class="book">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Название произведения'" />
-      </td>
-    </tr>
-    <tr>
-      <td class="tour">4</td>
-      <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Персонаж'" />
-      </td>
-      <td class="book">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Название произведения'" />
-      </td>
-    </tr>
-    <tr>
-      <td class="tour">5</td>
-      <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Персонаж'" />
-      </td>
-      <td class="book">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Название произведения'" />
-      </td>
-    </tr>
-    <tr>
-      <td class="tour">6</td>
-      <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Персонаж'" />
-      </td>
-      <td class="book">
-        <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'Название произведения'" />
+        <input
+          adm-input-element
+          type="text"
+          [(ngModel)]="round.fields[roundNumber].second"
+          [placeholder]="'Название произведения'"
+        />
       </td>
     </tr>
   </tbody>

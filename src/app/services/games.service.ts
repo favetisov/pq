@@ -144,15 +144,38 @@ export class GamesService {
     return { success: true };
   }
 
+  async evaluate(game: Game, code: string, round) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/${code}/${round._id}/evaluate_answer`,
+      params: round,
+    });
+    return { success: true };
+  }
+
+  async revertAnswers(game: Game, code: string, round) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/${code}/${round._id}/evaluate_answer`,
+      params: round,
+    });
+    return { success: true };
+  }
+
   onGameRoundUpdated(gameId: string) {
-    return this.socket.fromEvent(IoMessages.onGameRoundUpdated).pipe(filter((e) => e.gameId == gameId));
+    return this.socket.fromEvent(IoMessages.onGameRoundUpdated).pipe(filter((e: any) => e.gameId == gameId));
   }
 
   onGameStateUpdated(gameId: string) {
-    return this.socket.fromEvent(IoMessages.onGameStateUpdated).pipe(filter((e) => e.gameId == gameId));
+    return this.socket.fromEvent(IoMessages.onGameStateUpdated).pipe(filter((e: any) => e.gameId == gameId));
   }
 
   onAnswerSubmitted(gameId: string) {
-    return this.socket.fromEvent(IoMessages.onAnswerSubmitted).pipe(filter((e) => e.gameId == gameId));
+    return this.socket.fromEvent(IoMessages.onAnswerSubmitted).pipe(filter((e: any) => e.gameId == gameId));
+  }
+  onAnswerEvaluated(gameId: string) {
+    return this.socket.fromEvent(IoMessages.onAnswerEvaluated).pipe(filter((e: any) => e.gameId == gameId));
   }
 }

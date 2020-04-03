@@ -44,12 +44,86 @@ export class GameEditPage implements OnInit {
         { fieldId: 11, first: '' },
       ],
     },
-    { _id: 1, name: 'А где это было?', enabledByDefault: true, schema: [] },
-    { _id: 2, name: 'Кто это сказал?', enabledByDefault: true, schema: [] },
-    { _id: 3, name: 'Музыкальный', enabledByDefault: false, schema: [] },
-    { _id: 4, name: 'Четвёртый лишний', enabledByDefault: true, schema: [] },
-    { _id: 5, name: 'По буквам', enabledByDefault: true, schema: [] },
-    { _id: 6, name: 'С первой подсказки', enabledByDefault: true, schema: [] },
+    {
+      _id: 1,
+      name: 'А где это было?',
+      enabledByDefault: true,
+      schema: [
+        { fieldId: 0, first: '' },
+        { fieldId: 1, first: '' },
+        { fieldId: 2, first: '' },
+        { fieldId: 3, first: '' },
+        { fieldId: 4, first: '' },
+        { fieldId: 5, first: '' },
+        { fieldId: 6, first: '' },
+      ],
+    },
+    {
+      _id: 2,
+      name: 'Кто это сказал?',
+      enabledByDefault: true,
+      schema: [
+        { fieldId: 0, first: '', second: '' },
+        { fieldId: 1, first: '', second: '' },
+        { fieldId: 2, first: '', second: '' },
+        { fieldId: 3, first: '', second: '' },
+        { fieldId: 4, first: '', second: '' },
+        { fieldId: 5, first: '', second: '' },
+      ],
+    },
+    {
+      _id: 3,
+      name: 'Музыкальный',
+      enabledByDefault: false,
+      schema: [
+        { fieldId: 0, first: '', second: '' },
+        { fieldId: 1, first: '', second: '' },
+        { fieldId: 2, first: '', second: '' },
+        { fieldId: 3, first: '', second: '' },
+        { fieldId: 4, first: '', second: '' },
+        { fieldId: 5, first: '', second: '' },
+      ],
+    },
+    {
+      _id: 4,
+      name: 'Четвёртый лишний',
+      enabledByDefault: true,
+      schema: [
+        { fieldId: 0, first: '', second: '' },
+        { fieldId: 1, first: '', second: '' },
+        { fieldId: 2, first: '', second: '' },
+        { fieldId: 3, first: '', second: '' },
+        { fieldId: 4, first: '', second: '' },
+        { fieldId: 5, first: '', second: '' },
+      ],
+    },
+    {
+      _id: 5,
+      name: 'По буквам',
+      enabledByDefault: true,
+      schema: [
+        { fieldId: 0, first: '' },
+        { fieldId: 1, first: '' },
+        { fieldId: 2, first: '' },
+        { fieldId: 3, first: '' },
+        { fieldId: 4, first: '' },
+        { fieldId: 5, first: '' },
+        { fieldId: 6, first: '' },
+      ],
+    },
+    {
+      _id: 6,
+      name: 'С первой подсказки',
+      enabledByDefault: true,
+      schema: [
+        { fieldId: 0, first: '', second: '', third: '' },
+        { fieldId: 1, first: '', second: '', third: '' },
+        { fieldId: 2, first: '', second: '', third: '' },
+        { fieldId: 3, first: '', second: '', third: '' },
+        { fieldId: 4, first: '', second: '', third: '' },
+        { fieldId: 5, first: '', second: '', third: '' },
+      ],
+    },
   ];
 
   validators = {
@@ -68,6 +142,11 @@ export class GameEditPage implements OnInit {
 
     this.gamesService.onAnswerSubmitted(this.game._id).subscribe((e: any) => {
       this.game.teams.find((t) => t._id == e.teamId).rounds[e.round].submittedTimestamp = e.submittedTimestamp;
+    });
+    this.gamesService.onAnswerEvaluated(this.game._id).subscribe((e: any) => {
+      const round = this.game.teams.find((t) => t._id == e.teamId).rounds.find((r) => r._id == e.roundId);
+      round.score = e.score;
+      round.evaluated = true;
     });
     this.state.loading = false;
   }
@@ -139,22 +218,26 @@ export class GameEditPage implements OnInit {
   async assignRoundsToTeams() {
     this.game.teams.forEach((t) => {
       t.rounds = this.game.rounds.map((r) => ({
-        roundId: r._id,
+        _id: r._id,
+        name: r.name,
         submittedTimestamp: null,
+        evaluated: false,
+        score: null,
         fields: r.schema.map((s) => ({
           fieldId: s.fieldId,
           first: s.first,
           second: s.second,
-          points: 0,
+          score: null,
         })),
       }));
     });
+    console.log(this.game.teams[0].rounds);
     await this.gamesService.assignRoundsToTeams(this.game);
   }
 
   calculateTeamScore(team) {
     const score = team.rounds.reduce((sum, r) => {
-      if (r.submittedTimestamp) sum += r.points;
+      if (r.evaluated) sum += r.score;
       return sum;
     }, 0);
     return score;
@@ -169,6 +252,7 @@ export class GameEditPage implements OnInit {
     this.game.state = GameState.NOT_STARTED;
     this.game.currentRound = 0;
     await this.assignRoundsToTeams();
+    await this.gamesService.updateRound(this.game);
     await this.gamesService.updateState(this.game);
     this.state.revertConfirm = false;
   }
@@ -191,9 +275,5 @@ export class GameEditPage implements OnInit {
   toPrevRound() {
     this.game.currentRound--;
     this.gamesService.updateRound(this.game);
-  }
-
-  formatTime(ts) {
-    return moment(ts).format('HH:mm:ss');
   }
 }

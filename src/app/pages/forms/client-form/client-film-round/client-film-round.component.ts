@@ -6,8 +6,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./client-film-round.component.scss'],
 })
 export class ClientFilmRoundComponent implements OnInit {
-  @Input() round: any = {};
+  @Input() round;
   constructor() {}
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    console.log(this.round.fields);
+  }
 }

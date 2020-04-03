@@ -1,26 +1,21 @@
 <section>
-  <adm-element-container [label]="'вопрос #1'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
-  </adm-element-container>
-  <adm-element-container [label]="'вопрос #2'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
-  </adm-element-container>
-  <adm-element-container [label]="'вопрос #3'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
-  </adm-element-container>
-  <adm-element-container [label]="'вопрос #4'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
-  </adm-element-container>
-  <adm-element-container [label]="'вопрос #5'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
-  </adm-element-container>
-  <adm-element-container [label]="'вопрос #6'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
+  <adm-element-container [label]="'вопрос #' + (idx + 1)" *ngFor="let idx of [0, 1, 2, 3, 4, 5]">
+    <input
+      adm-input-element
+      type="text"
+      [(ngModel)]="round.fields[idx].first"
+      [placeholder]="'FORMS.answer_text' | translate"
+    />
   </adm-element-container>
 </section>
 <h5>Название фильма:</h5>
 <section>
-  <adm-element-container [label]="'название фильма'">
-    <input adm-input-element type="text" [(ngModel)]="round.first" [placeholder]="'FORMS.answer_text' | translate" />
+  <adm-element-container [label]="'название фильма'" class="film">
+    <input
+      adm-input-element
+      type="text"
+      [(ngModel)]="round.fields[6].first"
+      [placeholder]="'FORMS.answer_text' | translate"
+    />
   </adm-element-container>
 </section>

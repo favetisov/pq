@@ -106,4 +106,26 @@ export const Controller = {
     });
     return { success: true };
   },
+
+  evaluate: async (req: Request) => {
+    const game = await Game.findById(req.params.gameId);
+    if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
+
+    game.teams.forEach((t) => {
+      if (t.code == req.params.code) {
+        const roundIdx = t.rounds.findIndex((r) => r._id == req.params.roundId);
+        t.rounds[roundIdx] = req.body;
+      }
+    });
+    await Game.findOneAndUpdate({ _id: req.params.gameId }, { teams: game.teams });
+
+    App.io.emit(IoMessages.onAnswerEvaluated, {
+      gameId: req.params.gameId,
+      teamId: game.teams.find((tm) => tm.code === req.params.code)._id,
+      roundId: req.params.roundId,
+      score: req.body.score,
+    });
+
+    return { success: true };
+  },
 };
