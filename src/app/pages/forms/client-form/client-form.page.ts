@@ -61,6 +61,7 @@ export class ClientFormPage implements OnInit, OnDestroy {
     try {
       this.game.teams[0].rounds[this.game.currentRound].submittedTimestamp = new Date().getTime();
       await this.gamesService.submitAnswer(this.game, this.route.snapshot.paramMap.get('code'));
+      this.state.submitConfirm = false;
     } catch (e) {}
     this.state.submitting = false;
   }

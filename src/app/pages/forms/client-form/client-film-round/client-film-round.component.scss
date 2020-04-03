@@ -1,2 +1,7 @@
 :host {
+  .film {
+    ::ng-deep input {
+      font-size: 14px;
+    }
+  }
 }

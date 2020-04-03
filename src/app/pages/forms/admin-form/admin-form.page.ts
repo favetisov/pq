@@ -3,7 +3,6 @@ import { AsyncSubject } from 'rxjs';
 import { Game } from 'app/models/game.model';
 import { GamesService } from 'app/services/games.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 
 @Component({
@@ -33,23 +32,7 @@ export class AdminFormPage implements OnInit, OnDestroy {
     );
     this.team = this.game.teams[0];
     const roundId = this.route.snapshot.paramMap.get('roundId');
-    console.log(roundId, this.team.rounds);
     this.round = this.team.rounds.find((r) => r._id == roundId);
-    this.gamesService
-      .onGameRoundUpdated(this.game._id)
-      .pipe(takeUntil(this.onDestroyed$))
-      .subscribe((e: any) => {
-        this.game.currentRound = e.currentRound;
-        this.round = this.team.rounds[this.game.currentRound];
-      });
-
-    this.gamesService
-      .onGameStateUpdated(this.game._id)
-      .pipe(takeUntil(this.onDestroyed$))
-      .subscribe((e: any) => {
-        this.game.state = e.state;
-      });
-
     this.state.loading = false;
   }
 

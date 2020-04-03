@@ -37,11 +37,12 @@ rl.question(`Set release version: (current is ${currentVersion}) `, version => {
  fs.writeFileSync(
    pathToEnvFile,
    env.replace(foundVerStr, `versionNumber: '${version}'`).replace(foundVerDtStr, `versionDate: '${moment().format('X')}'`));
-   exec('ng build --prod --build-optimizer --base-href /admin --deploy-url /admin');
+   // exec('ng build --prod --build-optimizer --base-href /admin --deploy-url /admin');
+   exec('ng build --prod --build-optimizer');
 
   console.log('build complete');
 
-  const projectName ='axl-admin';
+  const projectName ='pq';
   exec(`zip -r www.zip dist`);
   exec(`scp -i ${sshKeyPath} www.zip ${sshUser}@${server}:/var/www/${projectName}/www.zip`);
   exec(
