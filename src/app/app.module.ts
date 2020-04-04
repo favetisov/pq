@@ -56,11 +56,16 @@ import { AdminFilmRoundComponent } from 'app/pages/forms/admin-form/admin-film-r
 import { AdminLiteratureRoundComponent } from 'app/pages/forms/admin-form/admin-literature-round/admin-literature-round.component';
 import { AdminQuatroRoundComponent } from 'app/pages/forms/admin-form/admin-quatro-round/admin-quatro-round.component';
 import { AdminWordRoundComponent } from 'app/pages/forms/admin-form/admin-word-round/admin-word-round.component';
+import { LocationStrategy, Location } from '@angular/common';
 
 const config: SocketIoConfig = { url: 'http://localhost:3019', options: {} };
 
-const createTranslateLoader = (http: HttpClient) => {
-  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+const createTranslateLoader = (http: HttpClient, locationStrategy: LocationStrategy, location: Location) => {
+  return new TranslateHttpLoader(
+    http,
+    (locationStrategy.getBaseHref() + '/assets/i18n/').replace(new RegExp('\\/\\/', 'g'), '/'),
+    '.json',
+  );
 };
 
 const initServices = (translateService: TranslateService) => {
@@ -123,7 +128,7 @@ const initServices = (translateService: TranslateService) => {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient],
+        deps: [HttpClient, LocationStrategy, Location],
       },
     }),
     ImageCropperModule,

@@ -37,8 +37,8 @@ rl.question(`Set release version: (current is ${currentVersion}) `, version => {
  fs.writeFileSync(
    pathToEnvFile,
    env.replace(foundVerStr, `versionNumber: '${version}'`).replace(foundVerDtStr, `versionDate: '${moment().format('X')}'`));
-   // exec('ng build --prod --build-optimizer --base-href /admin --deploy-url /admin');
-   exec('ng build --prod --build-optimizer');
+   exec('ng build --prod --build-optimizer --base-href /admin --deploy-url /admin');
+   exec('ng build --prod --build-optimizer --base-href /app --deploy-url /app');
 
   console.log('build complete');
 
