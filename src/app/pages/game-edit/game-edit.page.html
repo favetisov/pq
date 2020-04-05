@@ -88,6 +88,26 @@
           </div>
         </section>
       </adm-card>
+
+      <adm-card class="rounds-card">
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">{{'GAMES.rounds' | translate}}</span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.savingInfo"></adm-spinner></div>
+        </h2>
+        <section>
+          <adm-element-container *ngFor="let round of availableRounds">
+            <adm-checkbox
+              [value]="isRoundIncluded(round)"
+              (toggle)="toggleRound(round)"
+              [title]="round.name"
+              [disabled]="game.state != GameState.NOT_STARTED"
+              adm-checkbox-element
+            >
+            </adm-checkbox>
+          </adm-element-container>
+        </section>
+      </adm-card>
     </div>
     <div class="column center">
       <adm-card class="desktop-card">
@@ -107,10 +127,19 @@
                   <td class="personal-link">Бланки</td>
                   <td
                     class="round"
-                    *ngFor="let round of game.rounds; let idx = index"
-                    [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == idx"
+                    *ngFor="let round of game.rounds; let rIdx = index"
+                    [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == rIdx"
                   >
-                    {{idx + 1}} тур
+                    {{rIdx + 1}} тур
+                    <div class="subrounds" *ngIf="round.subrounds.length > 1">
+                      <span
+                        class="subround"
+                        *ngFor="let subround of round.subrounds; let sIdx = index"
+                        [class.active]="sIdx == game.currentSubround && rIdx == game.currentRound"
+                      >
+                        {{sIdx + 1}}
+                      </span>
+                    </div>
                   </td>
                   <td class="total">Итог</td>
                 </tr>
@@ -125,18 +154,20 @@
                       <adm-icon name="link"></adm-icon>
                     </a>
                   </td>
-                  <td
-                    class="round"
-                    *ngFor="let round of team.rounds; let idx = index"
-                    [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == idx"
-                  >
-                    <a
-                      [href]="'/evaluate/' + game._id +  '/' + game.name + '/' + team.code + '/' + round._id"
-                      target="_blank"
-                      *ngIf="round.submittedTimestamp"
+                  <td class="round" *ngFor="let round of team.rounds; let rIdx = index">
+                    <span
+                      class="subround"
+                      *ngFor="let subround of round.subrounds; let sIdx = index"
+                      [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == rIdx && game.currentSubround == sIdx"
                     >
-                      <b>{{round.evaluated ? round.score : '?'}}</b>
-                    </a>
+                      <a
+                        [href]="'/evaluate/' + game._id +  '/' + game.name + '/' + team.code + '/' + round._id + '/' + subround._id"
+                        target="_blank"
+                        *ngIf="subround.submittedTimestamp"
+                      >
+                        <b>{{subround.evaluated ? subround.score : '?'}}</b>
+                      </a>
+                    </span>
                   </td>
                   <td class="total">
                     {{calculateTeamScore(team)}}
@@ -169,7 +200,7 @@
               {{'GAMES.to_prev_round' | translate}}
             </button>
             <button
-              *ngIf="game.state == GameState.IN_PROGRESS && game.currentRound < game.rounds.length - 1"
+              *ngIf="game.state == GameState.IN_PROGRESS && (game.currentRound < game.rounds.length - 1 || game.currentSubround < game.rounds[game.currentRound].subrounds.length - 1)"
               (click)="startNewRound()"
             >
               {{'GAMES.start_round' | translate}}
@@ -178,7 +209,7 @@
               {{'GAMES.reopen_game' | translate}}
             </button>
             <button
-              *ngIf="game.state == GameState.IN_PROGRESS && game.currentRound == game.rounds.length - 1"
+              *ngIf="game.state == GameState.IN_PROGRESS && game.currentRound == game.rounds.length - 1 && game.currentSubround == game.rounds[game.currentRound].subrounds.length - 1"
               (click)="finishGame()"
             >
               {{'GAMES.finish_game' | translate}}
@@ -198,26 +229,8 @@
         </section>
       </adm-card>
     </div>
-    <div class="column right">
-      <adm-card class="rounds-card">
-        <h2>
-          <div class="spinner-container"></div>
-          <span style="flex: 1; text-align: center;">{{'GAMES.rounds' | translate}}</span>
-          <div class="spinner-container"><adm-spinner *ngIf="state.savingInfo"></adm-spinner></div>
-        </h2>
-        <section>
-          <adm-element-container *ngFor="let round of availableRounds">
-            <adm-checkbox
-              [value]="isRoundIncluded(round)"
-              (toggle)="toggleRound(round)"
-              [title]="round.name"
-              [disabled]="game.state != GameState.NOT_STARTED"
-              adm-checkbox-element
-            >
-            </adm-checkbox>
-          </adm-element-container>
-        </section>
-      </adm-card>
-    </div>
+    <!--    <div class="column right">-->
+    <!--      -->
+    <!--    </div>-->
   </div>
 </ng-template>

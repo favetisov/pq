@@ -10,13 +10,18 @@
     <tr *ngFor="let roundNumber of [0, 1, 2, 3, 4, 5]">
       <td class="tour">{{ roundNumber + 1 }}</td>
       <td class="person">
-        <input adm-input-element type="text" [(ngModel)]="round.fields[roundNumber].first" [placeholder]="'Персонаж'" />
+        <input
+          adm-input-element
+          type="text"
+          [(ngModel)]="subround.fields[roundNumber].first"
+          [placeholder]="'Персонаж'"
+        />
       </td>
       <td class="book">
         <input
           adm-input-element
           type="text"
-          [(ngModel)]="round.fields[roundNumber].second"
+          [(ngModel)]="subround.fields[roundNumber].second"
           [placeholder]="'Название произведения'"
         />
       </td>

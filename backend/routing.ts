@@ -16,7 +16,7 @@ export const routes: Route[] = [
   { method: 'get', url: '/games/:gameId', handler: Controller.getGameInfo },
   { method: 'get', url: '/games/:gameId/:code', handler: Controller.getInfoByCode },
   { method: 'post', url: '/games/create', handler: Controller.createGame },
-  { method: 'post', url: '/games/:gameId/:code/:roundId/evaluate_answer', handler: Controller.evaluate },
+  { method: 'post', url: '/games/:gameId/:code/:roundId/:subroundId/evaluate_answer', handler: Controller.evaluate },
   { method: 'post', url: '/games/:gameId/edit', handler: Controller.editGame },
   { method: 'post', url: '/games/:gameId/add_team', handler: Controller.addTeam },
   { method: 'post', url: '/games/:gameId/remove_team', handler: Controller.removeTeam },

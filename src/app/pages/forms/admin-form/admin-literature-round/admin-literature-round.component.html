@@ -9,7 +9,7 @@
   <tbody>
     <tr *ngFor="let roundNumber of [0, 1, 2, 3, 4, 5]">
       <td class="number">{{ roundNumber + 1 }}</td>
-      <td class="answer">{{ round.fields[roundNumber].first }} - {{ round.fields[roundNumber].second }}</td>
+      <td class="answer">{{ subround.fields[roundNumber].first }} - {{ subround.fields[roundNumber].second }}</td>
       <td class="check">
         <adm-element-container>
           <adm-element-container>
@@ -35,7 +35,7 @@
       <td colspan="2"><b>Итого</b></td>
       <td class="check">
         <adm-element-container>
-          <input adm-input-element type="text" [(ngModel)]="round.score" [placeholder]="0" />
+          <input adm-input-element type="text" [(ngModel)]="subround.score" [placeholder]="0" />
         </adm-element-container>
       </td>
     </tr>

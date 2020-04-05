@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ClientLiteratureRoundComponent implements OnInit {
   @Input() round: any = {};
+  @Input() subround: any = {};
   constructor() {}
 
   async ngOnInit() {}

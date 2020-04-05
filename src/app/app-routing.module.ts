@@ -36,13 +36,13 @@ const routes: Routes = [
     },
   },
   {
-    path: 'evaluate/:gameId/:gameTitle/:code/:roundId',
+    path: 'evaluate/:gameId/:gameTitle/:code/:roundId/:subroundId',
     component: AdminFormPage,
     data: {
       breadcrumbs: [
         { label: 'GAMES.games', link: 'games' },
         { label: ':gameTitle', link: 'games/:gameId/:gameTitle' },
-        { label: 'FORMS.evaluate_form', link: 'evaluate/:gameId/:teamCode/:roundId' },
+        { label: 'FORMS.evaluate_form', link: 'evaluate/:gameId/:teamCode/:roundId/:subroundId' },
       ],
     },
   },

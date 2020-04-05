@@ -1,0 +1,68 @@
+:host {
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 1px;
+    thead {
+      td {
+        color: var(--primary-color);
+        font-size: 13px;
+        border-bottom: 1px solid var(--border-color-middle);
+        padding: 15px;
+      }
+    }
+    tr:not(:last-of-type) td {
+      border-bottom: 1px solid var(--border-color-middle);
+    }
+    td {
+      &:not(:last-of-type) {
+        border-right: 1px solid var(--border-color-middle);
+      }
+
+      text-align: left;
+    }
+
+    .number {
+      width: 30px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    .answer {
+      width: 100%;
+    }
+    .check {
+      width: 50px;
+      text-align: center;
+      adm-checkbox {
+        justify-content: center;
+      }
+    }
+
+    tbody .answer {
+      padding-left: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 11px;
+      background: transparent;
+      box-sizing: border-box;
+      text-align: center;
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+
+  .total {
+    font-size: 14px;
+    td:first-of-type {
+      padding-left: 20px;
+    }
+    input {
+      font-size: 14px;
+    }
+  }
+}

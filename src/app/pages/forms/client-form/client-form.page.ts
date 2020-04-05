@@ -22,6 +22,7 @@ export class ClientFormPage implements OnInit, OnDestroy {
   game: Game;
   team;
   round;
+  subround;
   GameState = GameState;
 
   constructor(private gamesService: GamesService, private route: ActivatedRoute) {}
@@ -33,12 +34,15 @@ export class ClientFormPage implements OnInit, OnDestroy {
     );
     this.team = this.game.teams[0];
     this.round = this.team.rounds[this.game.currentRound];
+    this.subround = this.round.subrounds[this.game.currentSubround];
     this.gamesService
       .onGameRoundUpdated(this.game._id)
       .pipe(takeUntil(this.onDestroyed$))
       .subscribe((e: any) => {
         this.game.currentRound = e.currentRound;
+        this.game.currentSubround = e.currentSubround;
         this.round = this.team.rounds[this.game.currentRound];
+        this.subround = this.round.subrounds[this.game.currentSubround];
       });
 
     this.gamesService
@@ -59,7 +63,9 @@ export class ClientFormPage implements OnInit, OnDestroy {
   async submit() {
     this.state.submitting = true;
     try {
-      this.game.teams[0].rounds[this.game.currentRound].submittedTimestamp = new Date().getTime();
+      this.game.teams[0].rounds[this.game.currentRound].subrounds[
+        this.game.currentSubround
+      ].submittedTimestamp = new Date().getTime();
       await this.gamesService.submitAnswer(this.game, this.route.snapshot.paramMap.get('code'));
       this.state.submitConfirm = false;
     } catch (e) {}

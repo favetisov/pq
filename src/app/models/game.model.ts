@@ -11,6 +11,7 @@ export class Game extends AbstractModel {
   name: string;
   state: GameState = GameState.NOT_STARTED;
   currentRound = 0;
+  currentSubround = 0;
   teams: Array<{
     _id: string;
     name: string;
@@ -18,16 +19,19 @@ export class Game extends AbstractModel {
     rounds: Array<{
       _id: number;
       name: string;
-      submittedTimestamp: number;
-      evaluated: boolean;
-      score: number;
-      fields: Array<{ fieldId: number; first: string; second: string; score: number }>;
+      subrounds: Array<{
+        submittedTimestamp: number;
+        evaluated: boolean;
+        score: number;
+        _id: number;
+        fields: Array<{ fieldId: number; first: string; second: string; score: number }>;
+      }>;
     }>;
   }> = [];
   rounds: Array<{
     _id: number;
     name: string;
-    schema: Array<{ fieldId: number; first: string; second?: string }>;
+    subrounds: Array<{ _id: number; name: string; schema: Array<{ fieldId: number; first: string; second?: string }> }>;
   }> = [];
 
   constructor(model?: Object) {

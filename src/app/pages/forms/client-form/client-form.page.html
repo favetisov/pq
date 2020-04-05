@@ -13,24 +13,22 @@
     <adm-card *ngIf="game.state == GameState.IN_PROGRESS">
       <h1>
         <div class="spinner-container"></div>
-        <span style="flex: 1; text-align: center;"
-          >Тур №{{game.currentRound + 1}}. "{{game.rounds[game.currentRound].name}}"</span
-        >
+        <span style="flex: 1; text-align: center;">
+          Тур №{{game.currentRound + 1}}. "{{round.name}}<span *ngIf="subround.name"> {{subround.name}}</span>"
+        </span>
         <div class="spinner-container"><adm-spinner *ngIf="state.submitting"></adm-spinner></div>
       </h1>
       <h2><span>Команда "{{team.name}}"</span></h2>
       <section>
-        <client-school-round *ngIf="game.rounds[game.currentRound]._id == 0" [round]="round"></client-school-round>
-        <client-film-round *ngIf="game.rounds[game.currentRound]._id == 1" [round]="round"></client-film-round>
-        <client-literature-round
-          *ngIf="game.rounds[game.currentRound]._id == 2"
-          [round]="round"
-        ></client-literature-round>
-        <client-quatro-round *ngIf="game.rounds[game.currentRound]._id == 4" [round]="round"></client-quatro-round>
-        <client-word-round *ngIf="game.rounds[game.currentRound]._id == 5" [round]="round"></client-word-round>
+        <client-school-round *ngIf="round._id == 0" [round]="round" [subround]="subround"></client-school-round>
+        <client-film-round *ngIf="round._id == 1" [round]="round" [subround]="subround"></client-film-round>
+        <client-literature-round *ngIf="round._id == 2" [round]="round" [subround]="subround"></client-literature-round>
+        <client-quatro-round *ngIf="round._id == 4" [round]="round" [subround]="subround"></client-quatro-round>
+        <client-word-round *ngIf="round._id == 5" [round]="round" [subround]="subround"></client-word-round>
+        <client-risk-round *ngIf="round._id == 6" [round]="round" [subround]="subround"></client-risk-round>
       </section>
       <section>
-        <ng-container *ngIf="!round.submittedTimestamp">
+        <ng-container *ngIf="!subround.submittedTimestamp">
           <div class="buttons-row" *ngIf="!state.submitConfirm">
             <button (click)="state.submitConfirm = true" [disabled]="state.submitting">
               {{'FORMS.submit' | translate}}
@@ -48,7 +46,7 @@
             </div>
           </ng-container>
         </ng-container>
-        <div class="answers-sent" *ngIf="round.submittedTimestamp">
+        <div class="answers-sent" *ngIf="subround.submittedTimestamp">
           Ответы сданы
         </div>
       </section>

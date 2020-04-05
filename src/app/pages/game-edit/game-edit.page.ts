@@ -4,7 +4,7 @@ import { GameFormComponent } from 'app/pages/games/game-form/game-form.component
 import { ActivatedRoute, Router } from '@angular/router';
 import { notEmptyValidator } from 'app/tools/validators';
 import { GamesService } from 'app/services/games.service';
-import * as moment from 'moment';
+import { availableRounds } from 'app/pages/game-edit/available-rounds';
 
 @Component({
   selector: 'game-edit-page',
@@ -23,108 +23,7 @@ export class GameEditPage implements OnInit {
   };
 
   GameState = GameState;
-
-  availableRounds = [
-    {
-      _id: 0,
-      name: 'Снова в школу',
-      enabledByDefault: true,
-      schema: [
-        { fieldId: 0, first: '' },
-        { fieldId: 1, first: '' },
-        { fieldId: 2, first: '' },
-        { fieldId: 3, first: '' },
-        { fieldId: 4, first: '' },
-        { fieldId: 5, first: '' },
-        { fieldId: 6, first: '' },
-        { fieldId: 7, first: '' },
-        { fieldId: 8, first: '' },
-        { fieldId: 9, first: '' },
-        { fieldId: 10, first: '' },
-        { fieldId: 11, first: '' },
-      ],
-    },
-    {
-      _id: 1,
-      name: 'А где это было?',
-      enabledByDefault: true,
-      schema: [
-        { fieldId: 0, first: '' },
-        { fieldId: 1, first: '' },
-        { fieldId: 2, first: '' },
-        { fieldId: 3, first: '' },
-        { fieldId: 4, first: '' },
-        { fieldId: 5, first: '' },
-        { fieldId: 6, first: '' },
-      ],
-    },
-    {
-      _id: 2,
-      name: 'Кто это сказал?',
-      enabledByDefault: true,
-      schema: [
-        { fieldId: 0, first: '', second: '' },
-        { fieldId: 1, first: '', second: '' },
-        { fieldId: 2, first: '', second: '' },
-        { fieldId: 3, first: '', second: '' },
-        { fieldId: 4, first: '', second: '' },
-        { fieldId: 5, first: '', second: '' },
-      ],
-    },
-    {
-      _id: 3,
-      name: 'Музыкальный',
-      enabledByDefault: false,
-      schema: [
-        { fieldId: 0, first: '', second: '' },
-        { fieldId: 1, first: '', second: '' },
-        { fieldId: 2, first: '', second: '' },
-        { fieldId: 3, first: '', second: '' },
-        { fieldId: 4, first: '', second: '' },
-        { fieldId: 5, first: '', second: '' },
-      ],
-    },
-    {
-      _id: 4,
-      name: 'Четвёртый лишний',
-      enabledByDefault: true,
-      schema: [
-        { fieldId: 0, first: '', second: '' },
-        { fieldId: 1, first: '', second: '' },
-        { fieldId: 2, first: '', second: '' },
-        { fieldId: 3, first: '', second: '' },
-        { fieldId: 4, first: '', second: '' },
-        { fieldId: 5, first: '', second: '' },
-      ],
-    },
-    {
-      _id: 5,
-      name: 'По буквам',
-      enabledByDefault: true,
-      schema: [
-        { fieldId: 0, first: '' },
-        { fieldId: 1, first: '' },
-        { fieldId: 2, first: '' },
-        { fieldId: 3, first: '' },
-        { fieldId: 4, first: '' },
-        { fieldId: 5, first: '' },
-        { fieldId: 6, first: '' },
-      ],
-    },
-    {
-      _id: 6,
-      name: 'С первой подсказки',
-      enabledByDefault: true,
-      schema: [
-        { fieldId: 0, first: '', second: '', third: '' },
-        { fieldId: 1, first: '', second: '', third: '' },
-        { fieldId: 2, first: '', second: '', third: '' },
-        { fieldId: 3, first: '', second: '', third: '' },
-        { fieldId: 4, first: '', second: '', third: '' },
-        { fieldId: 5, first: '', second: '', third: '' },
-      ],
-    },
-  ];
+  availableRounds = availableRounds;
 
   validators = {
     teamName: [notEmptyValidator],
@@ -137,17 +36,19 @@ export class GameEditPage implements OnInit {
 
   async ngOnInit() {
     this.game = await this.gamesService.loadGameInfo(this.route.snapshot.paramMap.get('gameId'));
-    if (!this.game.rounds.length) this.game.rounds = this.availableRounds.filter((r) => r.enabledByDefault);
+    if (!this.game.rounds.length) this.game.rounds = availableRounds.filter((r) => r.enabledByDefault);
     if (this.game.teams.some((t) => !t.rounds)) this.assignRoundsToTeams();
 
     this.gamesService.onAnswerSubmitted(this.game._id).subscribe((e: any) => {
-      this.game.teams.find((t) => t._id == e.teamId).rounds[e.round].submittedTimestamp = e.submittedTimestamp;
+      this.game.teams.find((t) => t._id === e.teamId).rounds[e.round].subrounds[e.subround].submittedTimestamp =
+        e.submittedTimestamp;
     });
     this.gamesService.onAnswerEvaluated(this.game._id).subscribe((e: any) => {
-      const round = this.game.teams.find((t) => t._id == e.teamId).rounds.find((r) => r._id == e.roundId);
-      round.score = e.score;
-      round.evaluated = true;
+      const subround = this.game.teams.find((t) => t._id === e.teamId).rounds[e.round].subrounds[e.subround];
+      subround.score = e.score;
+      subround.evaluated = e.evaluted;
     });
+
     this.state.loading = false;
   }
 
@@ -220,18 +121,20 @@ export class GameEditPage implements OnInit {
       t.rounds = this.game.rounds.map((r) => ({
         _id: r._id,
         name: r.name,
-        submittedTimestamp: null,
-        evaluated: false,
-        score: null,
-        fields: r.schema.map((s) => ({
-          fieldId: s.fieldId,
-          first: s.first,
-          second: s.second,
+        subrounds: r.subrounds.map((sr) => ({
+          _id: sr._id,
+          submittedTimestamp: null,
+          evaluated: false,
           score: null,
+          fields: sr.schema.map((s) => ({
+            fieldId: s.fieldId,
+            first: s.first,
+            second: s.second,
+            score: null,
+          })),
         })),
       }));
     });
-    console.log(this.game.teams[0].rounds);
     await this.gamesService.assignRoundsToTeams(this.game);
   }
 
@@ -251,6 +154,7 @@ export class GameEditPage implements OnInit {
   async revertGame() {
     this.game.state = GameState.NOT_STARTED;
     this.game.currentRound = 0;
+    this.game.currentSubround = 0;
     await this.assignRoundsToTeams();
     await this.gamesService.updateRound(this.game);
     await this.gamesService.updateState(this.game);
@@ -268,12 +172,23 @@ export class GameEditPage implements OnInit {
   }
 
   startNewRound() {
-    this.game.currentRound++;
+    if (this.game.currentSubround < this.game.rounds[this.game.currentRound].subrounds.length - 1) {
+      this.game.currentSubround++;
+    } else {
+      this.game.currentRound++;
+      this.game.currentSubround = 0;
+    }
+    console.log(this.game);
     this.gamesService.updateRound(this.game);
   }
 
   toPrevRound() {
-    this.game.currentRound--;
+    if (this.game.currentSubround > 0) {
+      this.game.currentSubround--;
+    } else {
+      this.game.currentRound--;
+      this.game.currentSubround = 0;
+    }
     this.gamesService.updateRound(this.game);
   }
 }

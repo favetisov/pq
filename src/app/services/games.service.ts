@@ -119,7 +119,7 @@ export class GamesService {
     await this.requester.load({
       method: 'POST',
       url: `/games/${game._id}/update_round`,
-      params: { currentRound: game.currentRound },
+      params: { currentRound: game.currentRound, currentSubround: game.currentSubround },
     });
     return { success: true };
   }
@@ -144,21 +144,21 @@ export class GamesService {
     return { success: true };
   }
 
-  async evaluate(game: Game, code: string, round) {
+  async evaluate(game: Game, code: string, round, subround) {
     await this.ready$.toPromise();
     await this.requester.load({
       method: 'POST',
-      url: `/games/${game._id}/${code}/${round._id}/evaluate_answer`,
-      params: round,
+      url: `/games/${game._id}/${code}/${round._id}/${subround._id}/evaluate_answer`,
+      params: subround,
     });
     return { success: true };
   }
 
-  async revertAnswers(game: Game, code: string, round) {
+  async revertAnswers(game: Game, code: string, round, subround) {
     await this.ready$.toPromise();
     await this.requester.load({
       method: 'POST',
-      url: `/games/${game._id}/${code}/${round._id}/evaluate_answer`,
+      url: `/games/${game._id}/${code}/${round._id}/${subround._id}/evaluate_answer`,
       params: round,
     });
     return { success: true };

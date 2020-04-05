@@ -57,6 +57,8 @@ import { AdminLiteratureRoundComponent } from 'app/pages/forms/admin-form/admin-
 import { AdminQuatroRoundComponent } from 'app/pages/forms/admin-form/admin-quatro-round/admin-quatro-round.component';
 import { AdminWordRoundComponent } from 'app/pages/forms/admin-form/admin-word-round/admin-word-round.component';
 import { LocationStrategy, Location } from '@angular/common';
+import { ClientRiskRoundComponent } from 'app/pages/forms/client-form/client-risk-round/client-risk-round.component';
+import { AdminRiskRoundComponent } from 'app/pages/forms/admin-form/admin-risk-round/admin-risk-round.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3019', options: {} };
 
@@ -113,6 +115,8 @@ const initServices = (translateService: TranslateService) => {
     AdminLiteratureRoundComponent,
     AdminQuatroRoundComponent,
     AdminWordRoundComponent,
+    ClientRiskRoundComponent,
+    AdminRiskRoundComponent,
   ],
   imports: [
     CommonModule,

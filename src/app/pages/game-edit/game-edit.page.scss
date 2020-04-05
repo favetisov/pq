@@ -4,6 +4,7 @@
   .wrapper {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     .column {
       display: flex;
       flex: 1;
@@ -17,11 +18,11 @@
         }
       }
       &.center {
-        max-width: 700px;
+        max-width: 800px;
         margin: 0 5px;
         adm-card {
           margin: 0;
-          min-width: 700px;
+          min-width: 800px;
         }
       }
       &.right {
@@ -30,6 +31,25 @@
           margin: 0;
           min-width: 250px;
           margin-bottom: 5px;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1060px) {
+    .wrapper {
+      justify-content: center;
+      flex-direction: column-reverse;
+      align-items: center;
+      .column {
+        flex-direction: row;
+        &.left {
+          align-items: flex-start;
+          justify-content: space-between;
+          max-width: 810px;
+          min-width: 810px;
+          adm-card {
+            margin: 10px 5px;
+          }
         }
       }
     }
@@ -54,12 +74,27 @@
         border-collapse: separate;
         border-spacing: 1px;
         padding: 10px;
+        margin: 0 auto;
         thead {
           td {
             font-weight: 600;
             color: var(--primary-color);
             font-size: 13px;
             border-bottom: 1px solid var(--border-color-middle);
+          }
+          .subrounds {
+            margin-top: 5px;
+            padding: 0 5px;
+            .subround {
+              display: inline-block;
+              color: var(--primary-color);
+              font-size: 11px;
+              width: 15px;
+              transition: all 0.2s;
+              &.active {
+                transform: scale(1.5);
+              }
+            }
           }
         }
         tr:not(:last-of-type) td {
@@ -83,18 +118,26 @@
         }
         .round {
           padding: 5px 0;
-          width: 75px;
+          min-width: 75px;
           line-height: 13px;
+          transition: font-size 0.2s;
           &.active {
-            background: rgba(255, 255, 0, 0.1);
+            //background: rgba(255, 255, 0, 0.1);
+            font-size: 16px;
           }
+        }
+        .subround {
+          display: inline-block;
+          width: 15px;
+          min-height: 10px;
+          margin: 0 1px;
           a {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            height: 30px;
             transition: all 0.2s;
+            width: 15px;
             &:hover {
               transform: scale(1.2);
             }

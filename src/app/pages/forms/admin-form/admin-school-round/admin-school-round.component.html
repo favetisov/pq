@@ -9,7 +9,7 @@
   <tbody>
     <tr *ngFor="let roundNumber of [0, 1, 2, 3, 4, 5, 6, 7, 8]">
       <td class="number">{{ roundNumber + 1 }}</td>
-      <td class="answer">{{ round.fields[roundNumber].first }}</td>
+      <td class="answer">{{ subround.fields[roundNumber].first }}</td>
       <td class="check">
         <adm-element-container>
           <adm-checkbox [value]="checkmarks[roundNumber]" (toggle)="toggleCheckmark(roundNumber)" adm-checkbox-element>
@@ -24,7 +24,7 @@
     </tr>
     <tr *ngFor="let roundNumber of [9, 10, 11]">
       <td class="number">{{ roundNumber + 1 }}</td>
-      <td class="answer">{{ round.fields[roundNumber].first }}</td>
+      <td class="answer">{{ subround.fields[roundNumber].first }}</td>
       <td class="check">
         <adm-element-container>
           <adm-checkbox [value]="checkmarks[roundNumber]" (toggle)="toggleCheckmark(roundNumber)" adm-checkbox-element>
@@ -37,7 +37,7 @@
       <td colspan="2"><b>Итого</b></td>
       <td class="check">
         <adm-element-container>
-          <input adm-input-element type="text" [(ngModel)]="round.score" [placeholder]="0" />
+          <input adm-input-element type="text" [(ngModel)]="subround.score" [placeholder]="0" />
         </adm-element-container>
       </td>
     </tr>

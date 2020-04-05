@@ -1,0 +1,10 @@
+<section>
+  <adm-element-container [label]="'подсказка #' + (idx + 1)" *ngFor="let idx of [0, 1, 2]">
+    <input
+      adm-input-element
+      type="text"
+      [(ngModel)]="subround.fields[idx].first"
+      [placeholder]="'FORMS.answer_text' | translate"
+    />
+  </adm-element-container>
+</section>

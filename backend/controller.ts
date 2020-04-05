@@ -73,8 +73,15 @@ export const Controller = {
   },
 
   updateRound: async (req: Request) => {
-    await Game.findOneAndUpdate({ _id: req.params.gameId }, { currentRound: req.body.currentRound });
-    App.io.emit(IoMessages.onGameRoundUpdated, { gameId: req.params.gameId, currentRound: req.body.currentRound });
+    await Game.findOneAndUpdate(
+      { _id: req.params.gameId },
+      { currentRound: req.body.currentRound, currentSubround: req.body.currentSubround },
+    );
+    App.io.emit(IoMessages.onGameRoundUpdated, {
+      gameId: req.params.gameId,
+      currentRound: req.body.currentRound,
+      currentSubround: req.body.currentSubround,
+    });
     return { success: true };
   },
 
@@ -89,19 +96,17 @@ export const Controller = {
     if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
 
     const submittedTimestamp = new Date().getTime();
-    game.teams.forEach((t) => {
-      if (t.code == req.params.code) {
-        t.rounds[req.body.currentRound] = req.body.teams.find((tm) => tm.code == req.params.code).rounds[
-          req.body.currentRound
-        ];
-        t.rounds[req.body.currentRound].submittedTimestamp = submittedTimestamp;
-      }
-    });
+    const team = game.teams.find((t) => t.code === req.params.code);
+    team.rounds[req.body.currentRound].subrounds[req.body.currentSubround] = req.body.teams.find(
+      (tm) => tm.code == req.params.code,
+    ).rounds[req.body.currentRound].subrounds[req.body.currentSubround];
+    team.rounds[req.body.currentRound].subrounds[req.body.currentSubround].submittedTimestamp = submittedTimestamp;
     await Game.findOneAndUpdate({ _id: req.params.gameId }, { teams: game.teams });
     App.io.emit(IoMessages.onAnswerSubmitted, {
       gameId: req.params.gameId,
       teamId: req.body.teams.find((tm) => tm.code == req.params.code)._id,
       round: req.body.currentRound,
+      subround: req.body.currentSubround,
       submittedTimestamp,
     });
     return { success: true };
@@ -111,18 +116,17 @@ export const Controller = {
     const game = await Game.findById(req.params.gameId);
     if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
 
-    game.teams.forEach((t) => {
-      if (t.code == req.params.code) {
-        const roundIdx = t.rounds.findIndex((r) => r._id == req.params.roundId);
-        t.rounds[roundIdx] = req.body;
-      }
-    });
+    const team = game.teams.find((t) => t.code === req.params.code);
+    const roundIdx = team.rounds.findIndex((r) => r._id == req.params.roundId);
+    const subroundIdx = team.rounds[roundIdx].subrounds.findIndex((sr) => sr._id == req.params.subroundId);
+    team.rounds[roundIdx].subrounds[subroundIdx] = req.body;
     await Game.findOneAndUpdate({ _id: req.params.gameId }, { teams: game.teams });
 
     App.io.emit(IoMessages.onAnswerEvaluated, {
       gameId: req.params.gameId,
       teamId: game.teams.find((tm) => tm.code === req.params.code)._id,
-      roundId: req.params.roundId,
+      round: roundIdx,
+      subround: subroundIdx,
       score: req.body.score,
     });
 

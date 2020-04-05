@@ -1,13 +1,13 @@
 <table>
   <thead>
     <tr>
-      <td class="number">Вопрос</td>
+      <td class="number">Номер подсказки</td>
       <td class="answer">Текст ответа</td>
       <td class="check">Результат</td>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let roundNumber of [0, 1, 2, 3, 4, 5]">
+    <tr *ngFor="let roundNumber of [0, 1, 2]">
       <td class="number">{{ roundNumber + 1 }}</td>
       <td class="answer">{{ subround.fields[roundNumber].first }}</td>
       <td class="check">
@@ -17,22 +17,6 @@
         </adm-element-container>
       </td>
     </tr>
-    <tr>
-      <td colspan="3">
-        <h5><span>Название фильма:</span></h5>
-      </td>
-    </tr>
-    <tr *ngFor="let roundNumber of [6]">
-      <td class="number">{{ roundNumber + 1 }}</td>
-      <td class="answer">{{ subround.fields[roundNumber].first }}</td>
-      <td class="check">
-        <adm-element-container>
-          <adm-checkbox [value]="checkmarks[roundNumber]" (toggle)="toggleCheckmark(roundNumber)" adm-checkbox-element>
-          </adm-checkbox>
-        </adm-element-container>
-      </td>
-    </tr>
-
     <tr class="total">
       <td colspan="2"><b>Итого</b></td>
       <td class="check">

@@ -12,11 +12,12 @@
       </div>
       <h2><span>Команда "{{team.name}}"</span></h2>
       <section>
-        <admin-school-round *ngIf="round._id == 0" [round]="round"></admin-school-round>
-        <admin-film-round *ngIf="round._id == 1" [round]="round"></admin-film-round>
-        <admin-literature-round *ngIf="round._id == 2" [round]="round"></admin-literature-round>
-        <admin-quatro-round *ngIf="round._id == 4" [round]="round"></admin-quatro-round>
-        <admin-word-round *ngIf="round._id == 5" [round]="round"></admin-word-round>
+        <admin-school-round *ngIf="round._id == 0" [round]="round" [subround]="subround"></admin-school-round>
+        <admin-film-round *ngIf="round._id == 1" [round]="round" [subround]="subround"></admin-film-round>
+        <admin-literature-round *ngIf="round._id == 2" [round]="round" [subround]="subround"></admin-literature-round>
+        <admin-quatro-round *ngIf="round._id == 4" [round]="round" [subround]="subround"></admin-quatro-round>
+        <admin-word-round *ngIf="round._id == 5" [round]="round" [subround]="subround"></admin-word-round>
+        <admin-risk-round *ngIf="round._id == 6" [round]="round" [subround]="subround"></admin-risk-round>
       </section>
       <section>
         <ng-container *ngIf="!state.confirmRevert">

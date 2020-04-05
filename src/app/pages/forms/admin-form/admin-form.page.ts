@@ -22,6 +22,7 @@ export class AdminFormPage implements OnInit, OnDestroy {
   game: Game;
   team;
   round;
+  subround;
 
   constructor(private gamesService: GamesService, private route: ActivatedRoute, private router: Router) {}
 
@@ -33,6 +34,8 @@ export class AdminFormPage implements OnInit, OnDestroy {
     this.team = this.game.teams[0];
     const roundId = this.route.snapshot.paramMap.get('roundId');
     this.round = this.team.rounds.find((r) => r._id == roundId);
+    const subroundId = this.route.snapshot.paramMap.get('subroundId');
+    this.subround = this.round.subrounds.find((sr) => sr._id == subroundId);
     this.state.loading = false;
   }
 
@@ -44,8 +47,8 @@ export class AdminFormPage implements OnInit, OnDestroy {
   async evaluate() {
     this.state.evaluating = true;
     try {
-      this.round.evaluated = true;
-      await this.gamesService.evaluate(this.game, this.route.snapshot.paramMap.get('code'), this.round);
+      this.subround.evaluated = true;
+      await this.gamesService.evaluate(this.game, this.route.snapshot.paramMap.get('code'), this.round, this.subround);
       this.router.navigate(['/games', this.game._id, this.game.name]);
     } catch (e) {}
     this.state.evaluating = false;
@@ -54,9 +57,14 @@ export class AdminFormPage implements OnInit, OnDestroy {
   async revertAnswers() {
     this.state.evaluating = true;
     try {
-      this.round.evaluated = true;
-      this.round.submittedTimestamp = null;
-      await this.gamesService.revertAnswers(this.game, this.route.snapshot.paramMap.get('code'), this.round);
+      this.subround.evaluated = true;
+      this.subround.submittedTimestamp = null;
+      await this.gamesService.revertAnswers(
+        this.game,
+        this.route.snapshot.paramMap.get('code'),
+        this.round,
+        this.subround,
+      );
       this.state.confirmRevert = false;
     } catch (e) {}
     this.state.evaluating = false;
