@@ -29,7 +29,7 @@ export class GameEditPage implements OnInit {
     teamName: [notEmptyValidator],
   };
   game: Game;
-  @ViewChild(GameFormComponent) gameForm: GameFormComponent;
+  @ViewChild(GameFormComponent, { static: true }) gameForm: GameFormComponent;
   newTeamName: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private gamesService: GamesService) {}

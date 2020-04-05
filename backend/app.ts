@@ -57,5 +57,8 @@ export class App {
     console.log('starting api on port', App.env.apiPort, '...');
     const server = this.express.listen(App.env.apiPort, '0.0.0.0', callback);
     App.io = socketIo(server);
+    App.io.on('connection', () => {
+      console.log('connected');
+    });
   }
 }
