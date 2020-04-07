@@ -5,10 +5,33 @@
       <img [src]="getSlideUrl(game.broadcast.resolvedSlide)" />
     </ng-container>
     <ng-template #table>
-      TABLE
+      <table>
+        <thead>
+          <tr>
+            <td class="team-name">Команда</td>
+            <td class="round" *ngFor="let round of game.rounds; let rIdx = index">
+              {{rIdx + 1}} тур
+            </td>
+            <td class="total">Итог</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let team of game.teams">
+            <td class="team-name">
+              {{team.name}}
+            </td>
+            <td class="round" *ngFor="let round of team.rounds; let rIdx = index">
+              {{calculateRoundScore(round)}}
+            </td>
+            <td class="total">
+              {{calculateTeamScore(team)}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </ng-template>
   </ng-container>
   <ng-template #notStarted>
-    Трансляция не началась или уже закончилась
+    <div class="broadcast-not-started">Трансляция не началась или уже закончилась</div>
   </ng-template>
 </ng-template>

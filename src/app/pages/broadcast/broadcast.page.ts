@@ -39,6 +39,26 @@ export class BroadcastPage implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustUrl(env.hosts.PHOTO + '/slides/' + this.game._id + '/' + slide);
   }
 
+  calculateTeamScore(team) {
+    const score = team.rounds.reduce((sum, r) => {
+      sum += r.subrounds.reduce((sum, r) => {
+        if (r.evaluated) sum += r.score;
+        return sum;
+      }, 0);
+      return sum;
+    }, 0);
+    return score;
+  }
+
+  calculateRoundScore(round) {
+    if (!round.subrounds.some((s) => s.evaluated)) return '';
+    const score = round.subrounds.reduce((sum, r) => {
+      if (r.evaluated) sum += r.score;
+      return sum;
+    }, 0);
+    return score;
+  }
+
   async ngOnDestroy() {
     this.onDestroyed$.next(true);
     this.onDestroyed$.complete();
