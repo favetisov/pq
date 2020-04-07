@@ -9,6 +9,7 @@ export enum GameState {
 export class Game extends AbstractModel {
   _id: string;
   name: string;
+  twitchChannel: string;
   state: GameState = GameState.NOT_STARTED;
   currentRound = 0;
   currentSubround = 0;
@@ -38,7 +39,7 @@ export class Game extends AbstractModel {
     currentSlide: number;
     currentMode: string;
     inProgress: boolean;
-    resolvedSlide: '';
+    resolvedSlide: string;
   } = { slides: [], currentSlide: 0, currentMode: 'slide', inProgress: false, resolvedSlide: null };
 
   constructor(model?: Object) {

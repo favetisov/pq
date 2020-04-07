@@ -1,27 +1,30 @@
-<ng-container *ngIf="game.broadcast.currentMode == 'slide'; else table">
-  <img [src]="getSlideUrl(game.broadcast.resolvedSlide)" />
-</ng-container>
-<ng-template #table>
-  <table>
-    <thead>
-      <tr>
-        <td class="team-name">Команда</td>
-        <td class="round" *ngFor="let round of game.rounds; let rIdx = index">{{ rIdx + 1 }} тур</td>
-        <td class="total">Итог</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let team of game.teams">
-        <td class="team-name">
-          {{ team.name }}
-        </td>
-        <td class="round" *ngFor="let round of team.rounds; let rIdx = index">
-          {{ calculateRoundScore(round) }}
-        </td>
-        <td class="total">
-          {{ calculateTeamScore(team) }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</ng-template>
+<div class="twitch" id="twitch"></div>
+<div [class.silent]="silentMode">
+  <ng-container *ngIf="game.broadcast.currentMode == 'slide'; else table">
+    <img [src]="getSlideUrl(game.broadcast.resolvedSlide)" />
+  </ng-container>
+  <ng-template #table>
+    <table>
+      <thead>
+        <tr>
+          <td class="team-name">Команда</td>
+          <td class="round" *ngFor="let round of game.rounds; let rIdx = index">{{ rIdx + 1 }} тур</td>
+          <td class="total">Итог</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of game.teams">
+          <td class="team-name">
+            {{ team.name }}
+          </td>
+          <td class="round" *ngFor="let round of team.rounds; let rIdx = index">
+            {{ calculateRoundScore(round) }}
+          </td>
+          <td class="total">
+            {{ calculateTeamScore(team) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+</div>

@@ -59,6 +59,8 @@ export class GameEditPage implements OnInit {
       subround.evaluated = e.evaluted;
     });
 
+    this.game.broadcast.resolvedSlide = this.game.broadcast.slides[this.game.broadcast.currentSlide];
+
     this.gamesService.onBroadcastUpdated(this.game._id).subscribe((e: any) => {
       this.game.broadcast.resolvedSlide = e.resolvedSlide;
       this.game.broadcast.currentMode = e.currentMode;

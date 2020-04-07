@@ -39,14 +39,17 @@ export const Controller = {
 
   createGame: async (req: Request) => {
     if (!req.body.name) throw new ControllerError('Incorrect params', 400);
-    const game = await new Game({ name: req.body.name }).save();
+    const game = await new Game({ name: req.body.name, twitchChannel: req.body.twitchChannel }).save();
     App.io.emit(IoMessages.onGamesListUpdated, await Controller.getGamesList(req));
     return game;
   },
 
   editGame: async (req: Request) => {
     if (!req.body.name) throw new ControllerError('Incorrect params', 400);
-    await Game.findOneAndUpdate({ _id: req.params.gameId }, { name: req.body.name });
+    await Game.findOneAndUpdate(
+      { _id: req.params.gameId },
+      { name: req.body.name, twitchChannel: req.body.twitchChannel },
+    );
     App.io.emit(IoMessages.onGamesListUpdated, await Controller.getGamesList(req));
     return { success: true };
   },

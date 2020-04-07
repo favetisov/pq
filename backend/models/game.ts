@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 const schema = new mongoose.Schema({
   name: String,
+  twitchChannel: String,
   currentRound: { type: Number, default: 0 },
   currentSubround: { type: Number, default: 0 },
   state: { type: Number, default: 0 },

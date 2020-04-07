@@ -260,7 +260,7 @@
               <ng-template #tableMode>
                 <button (click)="toSlide()" class="mode-change">Переключиться на слайды</button>
               </ng-template>
-              <live [game]="game"></live>
+              <live [game]="game" [silentMode]="true"></live>
             </div>
           </ng-container>
           <ng-template #noSlides>
