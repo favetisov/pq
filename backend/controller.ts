@@ -159,7 +159,7 @@ export const Controller = {
 
     const dirPath = __dirname + '/public/slides/' + game._id;
     // existsSync(dirPath) && rmdirSync(dirPath, { recursive: true });
-    mkdirSync(dirPath);
+    if (!existsSync(dirPath)) mkdirSync(dirPath);
 
     const slides = [];
     for (const idx in req.body.slides) {
