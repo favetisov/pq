@@ -181,10 +181,6 @@
     .broadcast {
       padding: 30px;
       position: relative;
-      img {
-        max-height: 400px;
-        max-width: 400px;
-      }
       button {
         position: absolute;
         &.left {
@@ -230,6 +226,16 @@
         color: rgba(0, 0, 0, 0.6);
         font-size: 12px;
         text-align: right;
+      }
+      live {
+        ::ng-deep {
+          img {
+            height: 400px;
+          }
+          table {
+            max-width: 800px;
+          }
+        }
       }
     }
   }

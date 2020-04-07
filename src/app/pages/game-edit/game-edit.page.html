@@ -244,7 +244,6 @@
 
             <div class="broadcast" *ngIf="game.broadcast.inProgress">
               <ng-container *ngIf="game.broadcast.currentMode == 'slide'; else tableMode">
-                <img [src]="getSlideUrl(game.broadcast.slides[game.broadcast.currentSlide])" />
                 <div class="current">слайд: {{game.broadcast.currentSlide + 1 }}/{{game.broadcast.slides.length}}</div>
                 <button (click)="toPrevSlide()" class="left" *ngIf="game.broadcast.currentSlide > 0">
                   <adm-icon name="chevron-right"></adm-icon>
@@ -260,9 +259,8 @@
               </ng-container>
               <ng-template #tableMode>
                 <button (click)="toSlide()" class="mode-change">Переключиться на слайды</button>
-
-                Показываем таблицу
               </ng-template>
+              <live [game]="game"></live>
             </div>
           </ng-container>
           <ng-template #noSlides>

@@ -62,6 +62,7 @@ import { AdminRiskRoundComponent } from 'app/pages/forms/admin-form/admin-risk-r
 import { environment as env } from '@env';
 import { TablePage } from 'app/pages/table/table.page';
 import { BroadcastPage } from 'app/pages/broadcast/broadcast.page';
+import { LiveComponent } from 'app/pages/broadcast/live/live.component';
 
 const config: SocketIoConfig = { url: env.hosts.WS, options: {} };
 
@@ -122,6 +123,7 @@ const initServices = (translateService: TranslateService) => {
     AdminRiskRoundComponent,
     TablePage,
     BroadcastPage,
+    LiveComponent,
   ],
   imports: [
     CommonModule,

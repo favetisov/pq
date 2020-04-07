@@ -1,6 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { environment as env } from '@env';
-import { DomSanitizer } from '@angular/platform-browser';
 import { GamesService } from 'app/services/games.service';
 import { ActivatedRoute } from '@angular/router';
 import { Game } from 'app/models/game.model';
@@ -18,8 +16,8 @@ export class BroadcastPage implements OnInit, OnDestroy {
   };
   onDestroyed$ = new AsyncSubject();
 
-  private game: Game;
-  constructor(private gamesService: GamesService, private sanitizer: DomSanitizer, private route: ActivatedRoute) {}
+  game: Game;
+  constructor(private gamesService: GamesService, private route: ActivatedRoute) {}
 
   async ngOnInit() {
     this.game = await this.gamesService.loadBroadcastInfo(this.route.snapshot.paramMap.get('gameId'));
@@ -30,33 +28,8 @@ export class BroadcastPage implements OnInit, OnDestroy {
         this.game.broadcast.resolvedSlide = e.resolvedSlide;
         this.game.broadcast.currentMode = e.currentMode;
         this.game.broadcast.inProgress = e.inProgress;
-        console.log(e);
       });
     this.state.loading = false;
-  }
-
-  getSlideUrl(slide) {
-    return this.sanitizer.bypassSecurityTrustUrl(env.hosts.PHOTO + '/slides/' + this.game._id + '/' + slide);
-  }
-
-  calculateTeamScore(team) {
-    const score = team.rounds.reduce((sum, r) => {
-      sum += r.subrounds.reduce((sum, r) => {
-        if (r.evaluated) sum += r.score;
-        return sum;
-      }, 0);
-      return sum;
-    }, 0);
-    return score;
-  }
-
-  calculateRoundScore(round) {
-    if (!round.subrounds.some((s) => s.evaluated)) return '';
-    const score = round.subrounds.reduce((sum, r) => {
-      if (r.evaluated) sum += r.score;
-      return sum;
-    }, 0);
-    return score;
   }
 
   async ngOnDestroy() {

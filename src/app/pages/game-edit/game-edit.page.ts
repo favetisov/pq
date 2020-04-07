@@ -7,6 +7,7 @@ import { GamesService } from 'app/services/games.service';
 import { availableRounds } from 'app/pages/game-edit/available-rounds';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment as env } from '@env';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'game-edit-page',
@@ -58,7 +59,13 @@ export class GameEditPage implements OnInit {
       subround.evaluated = e.evaluted;
     });
 
-    console.log(this.game, 'GAME');
+    this.gamesService.onBroadcastUpdated(this.game._id).subscribe((e: any) => {
+      this.game.broadcast.resolvedSlide = e.resolvedSlide;
+      this.game.broadcast.currentMode = e.currentMode;
+      this.game.broadcast.inProgress = e.inProgress;
+      console.log(e);
+    });
+
     this.state.loading = false;
   }
 

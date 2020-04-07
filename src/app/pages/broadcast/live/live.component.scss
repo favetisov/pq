@@ -1,0 +1,98 @@
+:host {
+  display: block;
+  text-align: center;
+  img {
+    max-height: inherit;
+    max-width: inherit;
+    margin: 0 auto;
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.6);
+  }
+  $tdBorder: 2px solid rgba(255, 255, 255, 0.15);
+
+  table {
+    max-width: inherit;
+    border-collapse: separate;
+    border-spacing: 1px;
+    margin: 0 auto;
+    background: linear-gradient(73deg, #f16820, #c7581e);
+    //border: 8px solid black;
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    thead {
+      td {
+        font-weight: 600;
+        color: white;
+        font-size: 18px;
+        border-bottom: $tdBorder;
+      }
+    }
+    tr:not(:last-of-type) td {
+      border-bottom: $tdBorder;
+    }
+    td {
+      &:not(:last-of-type) {
+        border-right: $tdBorder;
+      }
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      padding: 15px 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .team-name {
+      text-align: left;
+      min-width: 100px;
+    }
+    .round {
+      padding: 5px 0;
+      min-width: 75px;
+      line-height: 13px;
+      transition: font-size 0.2s;
+      &.active {
+        //background: rgba(255, 255, 0, 0.1);
+        font-size: 16px;
+      }
+    }
+    .subround {
+      display: inline-block;
+      width: 15px;
+      min-height: 10px;
+      margin: 0 1px;
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.2s;
+        width: 15px;
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+    .total {
+      font-weight: 600;
+    }
+
+    td {
+      &:nth-child(2n-1) {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.03) 2px,
+          rgba(0, 0, 00, 0) 2px,
+          rgba(0, 0, 0, 0) 3px
+        );
+      }
+      &:nth-child(2n) {
+        background: repeating-linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.03) 2px,
+          rgba(0, 0, 0, 0) 2px,
+          rgba(0, 0, 0, 0) 3px
+        );
+      }
+    }
+  }
+}
