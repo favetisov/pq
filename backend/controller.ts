@@ -158,7 +158,7 @@ export const Controller = {
     if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
 
     const dirPath = __dirname + '/public/slides/' + game._id;
-    existsSync(dirPath) && rmdirSync(dirPath, { recursive: true });
+    // existsSync(dirPath) && rmdirSync(dirPath, { recursive: true });
     mkdirSync(dirPath);
 
     const slides = [];
