@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  versionNumber: '0.0.4',
-  versionDate: '1586095966',
+  versionNumber: '0.0.12',
+  versionDate: '1586107360',
   app: {
     isMobile: false,
     name: 'PQ',
@@ -9,6 +9,8 @@ export const environment = {
   },
   hosts: {
     API: 'https://pyuq.ru/pq',
+    WS: 'https://pyuq.ru',
+    PHOTO: 'https://pyuq.ru/pq',
   },
   ipApi: {
     key: '1107a9b86b7aa0548a0af5f1c2007eb1',

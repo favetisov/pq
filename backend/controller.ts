@@ -4,6 +4,8 @@ import { ControllerError } from './utils/errors';
 import { App } from './app';
 import { IoMessages } from '../io-messages';
 import * as md5 from 'js-md5';
+import { existsSync, mkdirSync, rmdirSync } from 'fs';
+import { writeBase64ToFile } from './utils/base64ToFile';
 
 export const Controller = {
   ping: async (req: Request) => {
@@ -128,6 +130,44 @@ export const Controller = {
       round: roundIdx,
       subround: subroundIdx,
       score: req.body.score,
+    });
+
+    return { success: true };
+  },
+
+  uploadSlides: async (req: Request) => {
+    const game = await Game.findById(req.params.gameId);
+    if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
+
+    const dirPath = __dirname + '/public/slides/' + game._id;
+    existsSync(dirPath) && rmdirSync(dirPath, { recursive: true });
+    mkdirSync(dirPath);
+
+    const slides = [];
+    for (const idx in req.body.slides) {
+      const fileName = md5(game._id + Math.floor(Math.random() * 1000) + idx) + '.jpg';
+      await writeBase64ToFile(req.body.slides[idx], dirPath + '/' + fileName);
+      slides.push(fileName);
+    }
+
+    game.broadcast = { slides, currentSlide: 0, currentMode: 'table', inProgress: false };
+    await game.save();
+
+    return slides;
+  },
+
+  updateBroadcastState: async (req: Request) => {
+    const game = await Game.findById(req.params.gameId);
+    if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
+    if (!game.broadcast) throw new ControllerError('NO_BROADCAST_IN_GAME', 400);
+
+    await Game.findByIdAndUpdate(game._id, { broadcast: req.body.broadcast });
+
+    App.io.emit(IoMessages.onBroadcastUpdated, {
+      gameId: req.params.gameId,
+      slide: game.broadcast.slides[game.broadcast.currentSlide],
+      mode: game.broadcast.currentMode,
+      inProgress: game.broadcast.inProgress,
     });
 
     return { success: true };

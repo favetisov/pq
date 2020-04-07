@@ -39,6 +39,7 @@ export class ClientFormPage implements OnInit, OnDestroy {
       .onGameRoundUpdated(this.game._id)
       .pipe(takeUntil(this.onDestroyed$))
       .subscribe((e: any) => {
+        console.log('on game round updated');
         this.game.currentRound = e.currentRound;
         this.game.currentSubround = e.currentSubround;
         this.round = this.team.rounds[this.game.currentRound];

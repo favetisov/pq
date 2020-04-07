@@ -5,7 +5,7 @@ import { AsyncSubject, BehaviorSubject } from 'rxjs';
 import { Game } from 'app/models/game.model';
 import { Socket } from 'ngx-socket-io';
 import { IoMessages } from '../../../io-messages';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -164,8 +164,31 @@ export class GamesService {
     return { success: true };
   }
 
+  async uploadSlides(game: Game, slides: string[]) {
+    await this.ready$.toPromise();
+    const savedSlides = await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/upload_slides`,
+      params: { slides },
+    });
+    return savedSlides;
+  }
+
+  async updateBroadcastState(game: Game) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/update_broadcast`,
+      params: game,
+    });
+    return { success: true };
+  }
+
   onGameRoundUpdated(gameId: string) {
-    return this.socket.fromEvent(IoMessages.onGameRoundUpdated).pipe(filter((e: any) => e.gameId == gameId));
+    return this.socket.fromEvent(IoMessages.onGameRoundUpdated).pipe(
+      tap((c) => console.log(c, 'received')),
+      filter((e: any) => e.gameId == gameId),
+    );
   }
 
   onGameStateUpdated(gameId: string) {

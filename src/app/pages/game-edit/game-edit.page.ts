@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { notEmptyValidator } from 'app/tools/validators';
 import { GamesService } from 'app/services/games.service';
 import { availableRounds } from 'app/pages/game-edit/available-rounds';
+import { DomSanitizer } from '@angular/platform-browser';
+import { environment as env } from '@env';
 
 @Component({
   selector: 'game-edit-page',
@@ -20,6 +22,8 @@ export class GameEditPage implements OnInit {
     addingTeamMode: false,
     revertConfirm: false,
     deleteConfirm: false,
+    uploadingSlides: false,
+    deleteSlidesConfirm: false,
   };
 
   GameState = GameState;
@@ -29,10 +33,15 @@ export class GameEditPage implements OnInit {
     teamName: [notEmptyValidator],
   };
   game: Game;
-  @ViewChild(GameFormComponent, { static: true }) gameForm: GameFormComponent;
+  @ViewChild('gameForm', { static: false }) gameForm: GameFormComponent;
   newTeamName: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private gamesService: GamesService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private gamesService: GamesService,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   async ngOnInit() {
     this.game = await this.gamesService.loadGameInfo(this.route.snapshot.paramMap.get('gameId'));
@@ -49,6 +58,7 @@ export class GameEditPage implements OnInit {
       subround.evaluated = e.evaluted;
     });
 
+    console.log(this.game, 'GAME');
     this.state.loading = false;
   }
 
@@ -140,7 +150,10 @@ export class GameEditPage implements OnInit {
 
   calculateTeamScore(team) {
     const score = team.rounds.reduce((sum, r) => {
-      if (r.evaluated) sum += r.score;
+      sum += r.subrounds.reduce((sum, r) => {
+        if (r.evaluated) sum += r.score;
+        return sum;
+      }, 0);
       return sum;
     }, 0);
     return score;
@@ -190,5 +203,97 @@ export class GameEditPage implements OnInit {
       this.game.currentSubround = 0;
     }
     this.gamesService.updateRound(this.game);
+  }
+
+  uploadSlides(fileInput) {
+    if (fileInput.target.files) {
+      const photos = Array(fileInput.target.files.length).fill(null);
+      for (const idx in fileInput.target.files) {
+        const file = fileInput.target.files[idx];
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          photos[idx] = e.target.result;
+          if (!photos.some((p) => p == null)) {
+            this.game.broadcast.slides = await this.gamesService.uploadSlides(this.game, photos);
+          }
+        };
+        if (file.type) {
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+  }
+
+  async deleteSlides() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.slides = [];
+      this.game.broadcast.currentMode = 'table';
+      this.game.broadcast.currentSlide = 0;
+      this.game.broadcast.inProgress = false;
+      await this.gamesService.uploadSlides(this.game, []);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
+    this.state.deleteSlidesConfirm = false;
+  }
+
+  async startBroadcasting() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.currentSlide = 0;
+      this.game.broadcast.currentMode = 'slide';
+      this.game.broadcast.inProgress = true;
+      await this.gamesService.updateBroadcastState(this.game);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
+  }
+
+  async stopBroadcasting() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.inProgress = false;
+      await this.gamesService.updateBroadcastState(this.game);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
+  }
+
+  getSlideUrl(slide) {
+    return this.sanitizer.bypassSecurityTrustUrl(env.hosts.PHOTO + '/slides/' + this.game._id + '/' + slide);
+  }
+
+  async toPrevSlide() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.currentSlide--;
+      await this.gamesService.updateBroadcastState(this.game);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
+  }
+
+  async toNextSlide() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.currentSlide++;
+      await this.gamesService.updateBroadcastState(this.game);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
+  }
+
+  async toTable() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.currentMode = 'table';
+      await this.gamesService.updateBroadcastState(this.game);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
+  }
+
+  async toSlide() {
+    this.state.uploadingSlides = true;
+    try {
+      this.game.broadcast.currentMode = 'slide';
+      await this.gamesService.updateBroadcastState(this.game);
+    } catch (e) {}
+    this.state.uploadingSlides = false;
   }
 }

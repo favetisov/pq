@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <table>
+    <thead>
+      <tr>
+        <td class="team-name">Команда</td>
+        <td
+          class="round"
+          *ngFor="let round of game.rounds; let rIdx = index"
+          [class.active]="game.state == GameState.IN_PROGRESS && game.currentRound == rIdx"
+        >
+          {{rIdx + 1}} тур
+        </td>
+        <td class="total">Итог</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let team of game.teams">
+        <td class="team-name">
+          {{team.name}}
+        </td>
+        <td class="round" *ngFor="let round of team.rounds; let rIdx = index">
+          {{calculateRoundScore(round)}}
+        </td>
+        <td class="total">
+          {{calculateTeamScore(team)}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <img src="assets/img/pq.jpg" />
+</div>

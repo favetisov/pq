@@ -23,6 +23,7 @@ export class App {
     );
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(bodyParser.json({ limit: '50mb' }));
+    this.express.use(express.static(__dirname + '/public'));
 
     this.initRoutes();
     this.initConnection(env);

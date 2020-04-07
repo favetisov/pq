@@ -23,6 +23,9 @@
         adm-card {
           margin: 0;
           min-width: 800px;
+          &.broadcast-card {
+            margin-top: 10px;
+          }
         }
       }
       &.right {
@@ -50,6 +53,9 @@
           adm-card {
             margin: 10px 5px;
           }
+        }
+        &.center {
+          flex-direction: column;
         }
       }
     }
@@ -122,7 +128,6 @@
           line-height: 13px;
           transition: font-size 0.2s;
           &.active {
-            //background: rgba(255, 255, 0, 0.1);
             font-size: 16px;
           }
         }
@@ -146,6 +151,83 @@
         .total {
           font-weight: 600;
         }
+      }
+    }
+  }
+
+  .broadcast-card {
+    button {
+      position: relative;
+      input {
+        position: absolute;
+        background: red;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        left: 0;
+        top: 0;
+        height: 100%;
+      }
+    }
+
+    .slides-overview {
+      padding: 10px;
+      img {
+        height: 100px;
+        margin: 2px;
+      }
+    }
+
+    .broadcast {
+      padding: 30px;
+      position: relative;
+      img {
+        max-height: 400px;
+        max-width: 400px;
+      }
+      button {
+        position: absolute;
+        &.left {
+          height: calc(100% - 60px);
+          width: 30px;
+          left: 0;
+          top: 30px;
+          adm-icon {
+            transform: rotate(180deg);
+          }
+        }
+        &.right {
+          height: calc(100% - 60px);
+          width: 30px;
+          right: 0;
+          top: 30px;
+        }
+        adm-icon {
+          --height: 30px;
+          --width: 30px;
+          --fill: var(--primary-color);
+        }
+      }
+      .current {
+        position: absolute;
+        bottom: 0;
+        left: 30px;
+        width: calc(100% - 60px);
+        height: 30px;
+        line-height: 30px;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+      }
+      .mode-change {
+        position: absolute;
+        top: 0;
+        left: 30px;
+        width: calc(100% - 60px);
+        height: 30px;
+        line-height: 30px;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+        text-align: right;
       }
     }
   }

@@ -33,6 +33,12 @@ export class Game extends AbstractModel {
     name: string;
     subrounds: Array<{ _id: number; name: string; schema: Array<{ fieldId: number; first: string; second?: string }> }>;
   }> = [];
+  broadcast: {
+    slides: string[];
+    currentSlide: number;
+    currentMode: string;
+    inProgress: boolean;
+  } = { slides: [], currentSlide: 0, currentMode: 'slide', inProgress: false };
 
   constructor(model?: Object) {
     super();

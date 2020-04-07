@@ -16,6 +16,7 @@
       "dom"
     ],
     "paths": {
+      "rxjs": ["node_modules/rxjs"],
       "app/*": ["./src/app/*"],
       "@env": ["./src/environments/environment.ts"]
     }

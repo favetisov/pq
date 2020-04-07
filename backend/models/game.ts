@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
   state: { type: Number, default: 0 },
   rounds: mongoose.Schema.Types.Mixed,
   teams: mongoose.Schema.Types.Mixed,
+  broadcast: mongoose.Schema.Types.Mixed,
 });
 
 export const Game = mongoose.model('Game', schema);

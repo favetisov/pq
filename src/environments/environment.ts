@@ -9,6 +9,8 @@ export const environment = {
   },
   hosts: {
     API: 'http://localhost:3019/pq',
+    WS: 'http://localhost:3019',
+    PHOTO: 'http://localhost:3019',
     // API: 'https://pyuq.ru/pq'
   },
   ipApi: {

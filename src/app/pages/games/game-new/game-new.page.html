@@ -7,7 +7,7 @@
       <div class="spinner-container"><adm-spinner *ngIf="state.saving"></adm-spinner></div>
     </h1>
     <section #content>
-      <game-form [game]="game"></game-form>
+      <game-form [game]="game" #gameForm></game-form>
     </section>
     <section #footer>
       <div class="buttons-row">

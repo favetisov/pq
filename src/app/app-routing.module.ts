@@ -5,6 +5,7 @@ import { GameNewPage } from './pages/games/game-new/game-new.page';
 import { GameEditPage } from 'app/pages/game-edit/game-edit.page';
 import { ClientFormPage } from 'app/pages/forms/client-form/client-form.page';
 import { AdminFormPage } from 'app/pages/forms/admin-form/admin-form.page';
+import { TablePage } from 'app/pages/table/table.page';
 
 const routes: Routes = [
   { path: 'games', component: GamesPage, data: { breadcrumbs: [{ label: 'GAMES.games', link: 'games' }] } },
@@ -21,6 +22,16 @@ const routes: Routes = [
   {
     path: 'games/:gameId/:gameTitle',
     component: GameEditPage,
+    data: {
+      breadcrumbs: [
+        { label: 'GAMES.games', link: 'games' },
+        { label: ':gameTitle', link: 'games/:gameId/:gameTitle' },
+      ],
+    },
+  },
+  {
+    path: 'games/:gameId/:gameTitle/table',
+    component: TablePage,
     data: {
       breadcrumbs: [
         { label: 'GAMES.games', link: 'games' },

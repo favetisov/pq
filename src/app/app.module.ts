@@ -60,8 +60,9 @@ import { LocationStrategy, Location } from '@angular/common';
 import { ClientRiskRoundComponent } from 'app/pages/forms/client-form/client-risk-round/client-risk-round.component';
 import { AdminRiskRoundComponent } from 'app/pages/forms/admin-form/admin-risk-round/admin-risk-round.component';
 import { environment as env } from '@env';
+import { TablePage } from 'app/pages/table/table.page';
 
-const config: SocketIoConfig = { url: env.hosts.API, options: {} };
+const config: SocketIoConfig = { url: env.hosts.WS, options: {} };
 
 const createTranslateLoader = (http: HttpClient, locationStrategy: LocationStrategy, location: Location) => {
   return new TranslateHttpLoader(
@@ -118,6 +119,7 @@ const initServices = (translateService: TranslateService) => {
     AdminWordRoundComponent,
     ClientRiskRoundComponent,
     AdminRiskRoundComponent,
+    TablePage,
   ],
   imports: [
     CommonModule,

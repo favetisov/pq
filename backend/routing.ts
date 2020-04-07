@@ -20,6 +20,8 @@ export const routes: Route[] = [
   { method: 'post', url: '/games/:gameId/edit', handler: Controller.editGame },
   { method: 'post', url: '/games/:gameId/add_team', handler: Controller.addTeam },
   { method: 'post', url: '/games/:gameId/remove_team', handler: Controller.removeTeam },
+  { method: 'post', url: '/games/:gameId/upload_slides', handler: Controller.uploadSlides },
+  { method: 'post', url: '/games/:gameId/update_broadcast', handler: Controller.updateBroadcastState },
   { method: 'post', url: '/games/:gameId/assign_rounds_to_teams', handler: Controller.assignRoundsToTeams },
   { method: 'post', url: '/games/:gameId/update_round', handler: Controller.updateRound },
   { method: 'post', url: '/games/:gameId/update_state', handler: Controller.updateState },

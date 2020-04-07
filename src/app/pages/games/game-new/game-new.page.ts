@@ -16,7 +16,7 @@ export class GameNewPage implements OnInit {
   };
 
   game: Game;
-  @ViewChild(GameFormComponent, { static: true }) gameForm: GameFormComponent;
+  @ViewChild('gameForm', { static: false }) gameForm: GameFormComponent;
 
   constructor(private router: Router, private gamesService: GamesService) {}
 

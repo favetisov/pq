@@ -9,7 +9,7 @@
           <div class="spinner-container"><adm-spinner *ngIf="state.savingInfo"></adm-spinner></div>
         </h2>
         <section #content>
-          <game-form [game]="game"></game-form>
+          <game-form [game]="game" #gameForm></game-form>
         </section>
         <section #footer>
           <div class="buttons-row" *ngIf="!state.deleteConfirm">
@@ -228,9 +228,78 @@
           </ng-container>
         </section>
       </adm-card>
+      <adm-card class="broadcast-card">
+        <h2>
+          <div class="spinner-container"></div>
+          <span style="flex: 1; text-align: center;">
+            {{'GAMES.broadcast' | translate}}
+          </span>
+          <div class="spinner-container"><adm-spinner *ngIf="state.uploadingSlides"></adm-spinner></div>
+        </h2>
+        <section>
+          <ng-container *ngIf="game.broadcast.slides.length; else noSlides">
+            <div class="slides-overview" *ngIf="!game.broadcast.inProgress">
+              <img [src]="getSlideUrl(slide)" *ngFor="let slide of game.broadcast.slides" />
+            </div>
+
+            <div class="broadcast" *ngIf="game.broadcast.inProgress">
+              <ng-container *ngIf="game.broadcast.currentMode == 'slide'; else tableMode">
+                <img [src]="getSlideUrl(game.broadcast.slides[game.broadcast.currentSlide])" />
+                <div class="current">слайд: {{game.broadcast.currentSlide + 1 }}/{{game.broadcast.slides.length}}</div>
+                <button (click)="toPrevSlide()" class="left" *ngIf="game.broadcast.currentSlide > 0">
+                  <adm-icon name="chevron-right"></adm-icon>
+                </button>
+                <button
+                  (click)="toNextSlide()"
+                  class="right"
+                  *ngIf="game.broadcast.currentSlide < game.broadcast.slides.length -1 "
+                >
+                  <adm-icon name="chevron-right"></adm-icon>
+                </button>
+                <button (click)="toTable()" class="mode-change">Переключиться на таблицу</button>
+              </ng-container>
+              <ng-template #tableMode>
+                <button (click)="toSlide()" class="mode-change">Переключиться на слайды</button>
+              </ng-template>
+            </div>
+          </ng-container>
+          <ng-template #noSlides>
+            <div class="nothing-found">
+              {{'GAMES.upload_broadcast_slides' | translate}}
+            </div>
+          </ng-template>
+        </section>
+        <section>
+          <div class="buttons-row" *ngIf="!state.deleteSlidesConfirm">
+            <button *ngIf="!game.broadcast.slides.length">
+              <input type="file" multiple accept="image/jpeg" (change)="uploadSlides($event)" />
+              {{'GAMES.upload_slides' | translate}}
+            </button>
+            <ng-container *ngIf="game.broadcast.slides.length">
+              <button class="delete-button" (click)="state.deleteSlidesConfirm = true">
+                {{'GAMES.delete_slides' | translate}}
+              </button>
+              <button (click)="startBroadcasting()" *ngIf="!game.broadcast.inProgress">
+                {{'GAMES.start_broadcasting' | translate}}
+              </button>
+              <button (click)="stopBroadcasting()" *ngIf="game.broadcast.inProgress">
+                {{'GAMES.stop_broadcasting' | translate}}
+              </button>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="state.deleteSlidesConfirm">
+            <div class="confirm-phrase">{{'GAMES.confirm_delete_slides' | translate}}</div>
+            <div class="buttons-row">
+              <button (click)="state.deleteSlidesConfirm = false">
+                {{'COMMON.cancel' | translate}}
+              </button>
+              <button (click)="deleteSlides()" class="delete-button">
+                {{'GAMES.delete_slides' | translate}}
+              </button>
+            </div>
+          </ng-container>
+        </section>
+      </adm-card>
     </div>
-    <!--    <div class="column right">-->
-    <!--      -->
-    <!--    </div>-->
   </div>
 </ng-template>

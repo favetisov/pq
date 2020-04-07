@@ -1,7 +1,7 @@
 export const availableRounds = [
   {
     _id: 0,
-    name: 'test',
+    name: 'Снова в школу',
     enabledByDefault: true,
     subrounds: [
       {
