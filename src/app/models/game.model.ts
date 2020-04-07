@@ -38,7 +38,8 @@ export class Game extends AbstractModel {
     currentSlide: number;
     currentMode: string;
     inProgress: boolean;
-  } = { slides: [], currentSlide: 0, currentMode: 'slide', inProgress: false };
+    resolvedSlide: '';
+  } = { slides: [], currentSlide: 0, currentMode: 'slide', inProgress: false, resolvedSlide: null };
 
   constructor(model?: Object) {
     super();

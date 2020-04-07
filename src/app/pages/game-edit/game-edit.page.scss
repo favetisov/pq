@@ -189,18 +189,20 @@
         position: absolute;
         &.left {
           height: calc(100% - 60px);
-          width: 30px;
+          width: 40%;
           left: 0;
           top: 30px;
+          text-align: left;
           adm-icon {
             transform: rotate(180deg);
           }
         }
         &.right {
           height: calc(100% - 60px);
-          width: 30px;
+          width: 40%;
           right: 0;
           top: 30px;
+          text-align: right;
         }
         adm-icon {
           --height: 30px;

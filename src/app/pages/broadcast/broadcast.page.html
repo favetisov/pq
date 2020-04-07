@@ -1,0 +1,14 @@
+<div *ngIf="state.loading; else loaded" class="page-loader"><adm-spinner></adm-spinner></div>
+<ng-template #loaded>
+  <ng-container *ngIf="game.broadcast.inProgress; else notStarted">
+    <ng-container *ngIf="game.broadcast.currentMode == 'slide'; else table">
+      <img [src]="getSlideUrl(game.broadcast.resolvedSlide)" />
+    </ng-container>
+    <ng-template #table>
+      TABLE
+    </ng-template>
+  </ng-container>
+  <ng-template #notStarted>
+    Трансляция не началась или уже закончилась
+  </ng-template>
+</ng-template>

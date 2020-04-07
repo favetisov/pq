@@ -22,6 +22,21 @@ export const Controller = {
     return game;
   },
 
+  getBroadcastInfo: async (req: Request) => {
+    const game = await Game.findById(req.params.gameId).lean();
+    game.teams.forEach((t) => {
+      delete t.code;
+      t.rounds.forEach((r) => {
+        r.subrounds.forEach((sr) => {
+          delete sr.fields;
+        });
+      });
+    });
+    game.broadcast.resolvedSlide = game.broadcast.slides[game.broadcast.currentSlide];
+    delete game.broadcast.slides;
+    return game;
+  },
+
   createGame: async (req: Request) => {
     if (!req.body.name) throw new ControllerError('Incorrect params', 400);
     const game = await new Game({ name: req.body.name }).save();
@@ -165,9 +180,9 @@ export const Controller = {
 
     App.io.emit(IoMessages.onBroadcastUpdated, {
       gameId: req.params.gameId,
-      slide: game.broadcast.slides[game.broadcast.currentSlide],
-      mode: game.broadcast.currentMode,
-      inProgress: game.broadcast.inProgress,
+      resolvedSlide: req.body.broadcast.slides[req.body.broadcast.currentSlide],
+      currentMode: req.body.broadcast.currentMode,
+      inProgress: req.body.broadcast.inProgress,
     });
 
     return { success: true };

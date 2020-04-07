@@ -41,6 +41,11 @@ export class GamesService {
     const game = new Game(await this.requester.load(`/games/${gameId}`));
     return game;
   }
+  async loadBroadcastInfo(gameId) {
+    await this.ready$.toPromise();
+    const game = await this.requester.load(`/games/${gameId}/live`);
+    return game;
+  }
 
   async listenGamesList() {
     await this.ready$.toPromise();
@@ -198,7 +203,12 @@ export class GamesService {
   onAnswerSubmitted(gameId: string) {
     return this.socket.fromEvent(IoMessages.onAnswerSubmitted).pipe(filter((e: any) => e.gameId == gameId));
   }
+
   onAnswerEvaluated(gameId: string) {
     return this.socket.fromEvent(IoMessages.onAnswerEvaluated).pipe(filter((e: any) => e.gameId == gameId));
+  }
+
+  onBroadcastUpdated(gameId: string) {
+    return this.socket.fromEvent(IoMessages.onBroadcastUpdated).pipe(filter((e: any) => e.gameId == gameId));
   }
 }
