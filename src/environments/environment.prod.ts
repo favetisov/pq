@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  versionNumber: '0.0.13',
-  versionDate: '1586268737',
+  versionNumber: '0.0.19',
+  versionDate: '1586451975',
   app: {
     isMobile: false,
     name: 'PQ',

@@ -7,6 +7,8 @@ import { ClientFormPage } from 'app/pages/forms/client-form/client-form.page';
 import { AdminFormPage } from 'app/pages/forms/admin-form/admin-form.page';
 import { TablePage } from 'app/pages/table/table.page';
 import { BroadcastPage } from 'app/pages/broadcast/broadcast.page';
+import { AudioTestPage } from 'app/pages/audio-test/audio-test.page';
+import { AudioBroadcastPage } from 'app/pages/audio-test/audio-broadcast/audio-broadcast.page';
 
 const routes: Routes = [
   { path: 'games', component: GamesPage, data: { breadcrumbs: [{ label: 'GAMES.games', link: 'games' }] } },
@@ -63,6 +65,20 @@ const routes: Routes = [
     component: BroadcastPage,
     data: {
       breadcrumbs: [{ label: ':gameTitle', link: 'live/:gameId/:gameTitle' }],
+    },
+  },
+  {
+    path: 'test',
+    component: AudioTestPage,
+    data: {
+      breadcrumbs: [{ label: 'TEST BROADCASTING', link: 'test' }],
+    },
+  },
+  {
+    path: 'test-broadcast',
+    component: AudioBroadcastPage,
+    data: {
+      breadcrumbs: [{ label: 'TEST BROADCASTING', link: 'test' }],
     },
   },
 ];

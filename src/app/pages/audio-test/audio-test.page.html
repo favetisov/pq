@@ -1,0 +1,27 @@
+<adm-card>
+  <h2>
+    <div class="spinner-container"></div>
+    <span>Listening test</span>
+    <div class="spinner-container"><adm-spinner *ngIf="false"></adm-spinner></div>
+  </h2>
+
+  <section>
+    <b style="color: red;">
+      {{error}}
+    </b>
+
+    <audio autoplay controls [srcObject]="remoteStream">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+
+    <!--    <audio controls>-->
+    <!--      <source-->
+    <!--        src="https://app.box.com/shared/static/j9jix5nhuddqfiw4zq7390ob7y9asl7f.mp3"-->
+    <!--        type="audio/mpeg"-->
+    <!--        title="DELIBES. 'Flower Duet' from Lakme (MP3)"-->
+    <!--      />-->
+    <!--      <p>Your user agent does not support the HTML5 Audio element.</p>-->
+    <!--    </audio>-->
+  </section>
+</adm-card>

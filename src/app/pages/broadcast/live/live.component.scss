@@ -12,14 +12,6 @@
       box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.6);
     }
   }
-  //  height: 100%;
-  //  width: 100%;
-  //  overflow: hidden;
-  //  position: absolute;
-  //  opacity: 0;
-  //  top: 0;
-  //  left: 0;
-  //}
 
   .silent {
     margin-top: 85px;
@@ -39,7 +31,6 @@
     border-spacing: 1px;
     margin: 0 auto;
     background: linear-gradient(73deg, #f16820, #c7581e);
-    //border: 8px solid black;
     box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.6);
     box-sizing: border-box;
     thead {
@@ -117,6 +108,17 @@
           rgba(0, 0, 0, 0) 3px
         );
       }
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .round {
+      min-width: 25px !important;
+    }
+    thead .round {
+      font-size: 12px;
+    }
+    .team-name {
+      font-size: 13px;
     }
   }
 }

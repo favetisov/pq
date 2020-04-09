@@ -63,6 +63,8 @@ import { environment as env } from '@env';
 import { TablePage } from 'app/pages/table/table.page';
 import { BroadcastPage } from 'app/pages/broadcast/broadcast.page';
 import { LiveComponent } from 'app/pages/broadcast/live/live.component';
+import { AudioTestPage } from 'app/pages/audio-test/audio-test.page';
+import { AudioBroadcastPage } from 'app/pages/audio-test/audio-broadcast/audio-broadcast.page';
 
 const config: SocketIoConfig = { url: env.hosts.WS, options: {} };
 
@@ -124,6 +126,9 @@ const initServices = (translateService: TranslateService) => {
     TablePage,
     BroadcastPage,
     LiveComponent,
+    AudioTestPage,
+    BroadcastPage,
+    AudioBroadcastPage,
   ],
   imports: [
     CommonModule,

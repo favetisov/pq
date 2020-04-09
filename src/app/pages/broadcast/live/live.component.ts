@@ -3,6 +3,7 @@ import { environment as env } from '@env';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Game } from 'app/models/game.model';
 import * as Twitch from 'twitch-embed';
+import orderBy from 'lodash-es/orderBy';
 
 @Component({
   selector: 'live',
@@ -24,9 +25,8 @@ export class LiveComponent {
         autoplay: true,
       });
       console.log(player.getMuted());
-      // player.setVolume(1);
-      // console.log(player);
     }
+    this.game.teams = orderBy(this.game.teams, [(t) => this.calculateTeamScore(t)], ['DESC']).reverse();
   }
 
   getSlideUrl(slide) {

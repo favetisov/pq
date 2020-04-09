@@ -156,6 +156,13 @@
   }
 
   .broadcast-card {
+    h2 a {
+      color: var(--primary-color);
+      text-decoration: none;
+      --height: 17px;
+      --fill: var(--primary-color);
+      margin-left: 5px;
+    }
     button {
       position: relative;
       input {

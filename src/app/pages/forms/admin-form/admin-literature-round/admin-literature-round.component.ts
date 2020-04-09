@@ -16,7 +16,7 @@ export class AdminLiteratureRoundComponent implements OnInit {
       if (!f.score) return [false, false];
       if (f.score == 0.5) return [false, true];
       if (f.score == 2.5) return [true, false];
-      if (f.score == 0.5) return [true, true];
+      if (f.score == 3) return [true, true];
     });
   }
 
@@ -28,7 +28,7 @@ export class AdminLiteratureRoundComponent implements OnInit {
   }
 
   updateTotalScore() {
-    this.round.score = this.round.fields.reduce((sum, field) => {
+    this.subround.score = this.subround.fields.reduce((sum, field) => {
       if (field.score) sum += field.score;
       return sum;
     }, 0);

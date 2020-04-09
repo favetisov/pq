@@ -233,6 +233,9 @@
           <div class="spinner-container"></div>
           <span style="flex: 1; text-align: center;">
             {{'GAMES.broadcast' | translate}}
+            <a [href]="'/live/' + game._id +  '/' + game.name" target="_blank">
+              [ Ссылка: <adm-icon name="link"></adm-icon> ]
+            </a>
           </span>
           <div class="spinner-container"><adm-spinner *ngIf="state.uploadingSlides"></adm-spinner></div>
         </h2>
