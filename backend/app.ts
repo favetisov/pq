@@ -4,8 +4,8 @@ import * as cors from 'cors';
 import { routes } from './routing';
 import * as socketIo from 'socket.io';
 import * as mongoose from 'mongoose';
-import { IoMessages } from '../io-messages';
-const medooze = require('medooze-media-server');
+// import { IoMessages } from '../io-messages';
+// const medooze = require('medooze-media-server');
 
 export class App {
   static env: any;
@@ -29,7 +29,7 @@ export class App {
 
     this.initRoutes();
     this.initConnection(env);
-    this.initMedooze();
+    // this.initMedooze();
   }
 
   private async initRoutes() {
@@ -57,9 +57,9 @@ export class App {
     await mongoose.connect(env.db, { useNewUrlParser: true, useUnifiedTopology: true });
   }
 
-  private async initMedooze() {
-    medooze.createEndpoint('127.0.0.1');
-  }
+  // private async initMedooze() {
+  //   medooze.createEndpoint('127.0.0.1');
+  // }
 
   async start(callback) {
     console.log('starting api on port', App.env.apiPort, '...');
