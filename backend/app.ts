@@ -4,8 +4,11 @@ import * as cors from 'cors';
 import { routes } from './routing';
 import * as socketIo from 'socket.io';
 import * as mongoose from 'mongoose';
+// import { handleRTC } from './broadcast';
 // import { IoMessages } from '../io-messages';
-// const medooze = require('medooze-media-server');
+
+// const MediaServer = require('medooze-media-server');
+// const WebSocketServer = require('websocket').server;
 
 export class App {
   static env: any;
@@ -57,16 +60,18 @@ export class App {
     await mongoose.connect(env.db, { useNewUrlParser: true, useUnifiedTopology: true });
   }
 
-  // private async initMedooze() {
-  //   medooze.createEndpoint('127.0.0.1');
-  // }
+  private async initMedooze() {}
 
   async start(callback) {
     console.log('starting api on port', App.env.apiPort, '...');
     const server = this.express.listen(App.env.apiPort, '0.0.0.0', callback);
     App.io = socketIo(server);
 
+    // const endpoint = MediaServer.createEndpoint('192.168.1.6');
+    // MediaServer.setPortRange(10000, 20000);
+
     App.io.on('connection', (socket) => {
+      // handleRTC(endpoint, socket);
       socket.on('rtc', (message) => {
         App.io.emit('rtc', message);
       });

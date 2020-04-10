@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import adapter from 'webrtc-adapter';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 @Component({
@@ -12,36 +11,82 @@ export class AudioTestPage implements OnInit, OnDestroy {
     loading: true,
   };
   error: string;
-  localStream;
-  remoteStream;
-  remotePeerConnection;
-  peerConnection;
-  @ViewChild('player') audio: HTMLAudioElement;
+  stream: MediaStream;
+  pc;
+  sdp;
   senderId: string;
+  // localStream;
+  // remoteStream;
+  // remotePeerConnection;
+  // peerConnection;
+  // @ViewChild('player') audio: HTMLAudioElement;
 
   constructor(private socket: Socket) {}
+
+  // async ngOnInit() {
+  //   this.pc = window.RTCPeerConnection
+  //     ? new RTCPeerConnection({
+  //         bundlePolicy: 'max-bundle',
+  //         rtcpMuxPolicy: 'require',
+  //       })
+  //     : new webkitRTCPeerConnection(null);
+  //
+  //   this.pc.ontrack = (event) => {
+  //     console.log('ontrack');
+  //     this.stream = event.streams[0];
+  //   };
+  //   this.pc.onaddstream = (event) => {
+  //     console.log('on stream');
+  //     this.stream = event.stream;
+  //   };
+  //   // this.pc.onremovestream = this.stream = null;
+  //   const offer = await this.pc.createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true });
+  //   this.sdp = offer.sdp;
+  //   await this.pc.setLocalDescription(offer);
+  //   this.socket.emit('rtc', JSON.stringify({ cmd: 'OFFER', offer: this.sdp }));
+  //
+  //   this.socket.on('rtc', (event) => {
+  //     const msg = JSON.parse(event);
+  //     this.pc.setRemoteDescription(new RTCSessionDescription({ type: 'answer', sdp: msg.answer }));
+  //   });
+  // }
+  //
+  // async ngOnDestroy() {}
 
   async ngOnInit() {
     this.createId();
 
-    this.peerConnection = new RTCPeerConnection({
-      iceServers: [{ urls: 'stun:stun.services.mozilla.com' }, { urls: 'stun:stun.l.google.com:19302' }],
+    this.pc = new RTCPeerConnection({
+      iceServers: [
+        { urls: 'stun:pyuq.ru:4455' },
+        { urls: 'stun:pyuq.ru:5544' },
+        {
+          urls: 'turn:pyuq.ru:5544?transport=udp',
+          credential: 'pyuqrtc',
+          username: 'pyuq',
+        },
+        {
+          urls: 'turn:pyuq.ru:4455?transport=udp',
+          credential: 'pyuqrtc',
+          username: 'pyuq',
+        },
+      ],
     });
-    this.peerConnection.onicecandidate = (event) => {
+    this.pc.onicecandidate = (event) => {
       console.log('ON ICE', event);
       event.candidate
         ? this.sendMessage(this.senderId, JSON.stringify({ ice: event.candidate }))
         : console.log('Sent all Ice');
     };
-    this.peerConnection.onremovestream = (event) => {
+    this.pc.onremovestream = (event) => {
       console.log('stream ended');
     };
-    //также есть вариант с addstream
-    this.peerConnection.ontrack = (event) => {
-      this.remoteStream = event.streams[0];
+    // также есть вариант с addstream
+    this.pc.ontrack = (event) => {
+      this.stream = event.streams[0];
     };
-    const sessionDescription = await this.peerConnection.createOffer();
-    await this.peerConnection.setLocalDescription(sessionDescription);
+    const sessionDescription = await this.pc.createOffer();
+    await this.pc.setLocalDescription(sessionDescription);
     this.socket.on('rtc', (e) => this.readMessage(e));
   }
 
@@ -50,23 +95,23 @@ export class AudioTestPage implements OnInit, OnDestroy {
   }
 
   async readMessage(data) {
-    console.log('received data', data);
+    console.log(data);
     if (!data) return;
     try {
       const msg = JSON.parse(data.message);
       const sender = data.sender;
       if (sender !== this.senderId) {
-        if (msg.ice !== undefined && this.peerConnection != null) {
+        if (msg.ice !== undefined && this.pc != null) {
           const candidate = new RTCIceCandidate(msg.ice);
           console.log(candidate, 'candidate');
-          await this.peerConnection.addIceCandidate(candidate);
+          await this.pc.addIceCandidate(candidate);
         } else if (msg.sdp.type === 'offer') {
-          await this.peerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-          const answer = await this.peerConnection.createAnswer();
-          await this.peerConnection.setLocalDescription(answer);
-          this.sendMessage(this.senderId, JSON.stringify({ sdp: this.peerConnection.localDescription }));
+          await this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+          const answer = await this.pc.createAnswer();
+          await this.pc.setLocalDescription(answer);
+          this.sendMessage(this.senderId, JSON.stringify({ sdp: this.pc.localDescription }));
         } else if (msg.sdp.type === 'answer') {
-          await this.peerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+          await this.pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
         }
       }
     } catch (error) {
@@ -74,12 +119,7 @@ export class AudioTestPage implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    const tracks = this.localStream.getTracks();
-    for (let i = 0; i < tracks.length; i++) {
-      tracks[i].stop();
-    }
-  }
+  ngOnDestroy() {}
 
   createId() {
     const s4 = () =>
