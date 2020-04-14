@@ -27,6 +27,8 @@ export class GameEditPage implements OnInit {
     deleteSlidesConfirm: false,
   };
 
+  timerSec = 30;
+
   GameState = GameState;
   availableRounds = availableRounds;
 
@@ -304,5 +306,17 @@ export class GameEditPage implements OnInit {
       await this.gamesService.updateBroadcastState(this.game);
     } catch (e) {}
     this.state.uploadingSlides = false;
+  }
+
+  async setTimer() {
+    this.gamesService.setTimer(this.game, this.timerSec > 0, this.timerSec);
+  }
+
+  reduceTimer() {
+    this.timerSec = Math.max(0, this.timerSec - 30);
+  }
+
+  increaseTimer() {
+    this.timerSec += 30;
   }
 }

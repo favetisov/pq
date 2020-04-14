@@ -71,10 +71,11 @@ export class App {
     // MediaServer.setPortRange(10000, 20000);
 
     App.io.on('connection', (socket) => {
+      console.log('connected');
       // handleRTC(endpoint, socket);
-      socket.on('rtc', (message) => {
-        App.io.emit('rtc', message);
-      });
+      // socket.on('rtc', (message) => {
+      //   App.io.emit('rtc', message);
+      // });
     });
   }
 }

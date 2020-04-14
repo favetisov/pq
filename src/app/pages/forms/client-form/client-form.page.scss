@@ -26,4 +26,28 @@
     font-size: 14px;
     text-align: center;
   }
+
+  .timer {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    height: 100px;
+    width: 100px;
+    line-height: 100px;
+    text-align: center;
+    font-size: 50px;
+    color: white;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.6);
+    transition: background-color 1s;
+    &.calm {
+      background: #4b8a99;
+    }
+    &.warning {
+      background: #ecbb24;
+    }
+    &.danger {
+      background: darkred;
+    }
+  }
 }

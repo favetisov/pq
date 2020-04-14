@@ -230,7 +230,14 @@
       </adm-card>
       <adm-card class="broadcast-card">
         <h2>
-          <div class="spinner-container"></div>
+          <div class="spinner-container">
+            <div class="timer-button">
+              <button (click)="reduceTimer()"><adm-icon name="minus"></adm-icon></button>
+              {{timerSec}}
+              <button (click)="increaseTimer()"><adm-icon name="plus"></adm-icon></button>
+              <button (click)="setTimer()"><adm-icon name="play"></adm-icon></button>
+            </div>
+          </div>
           <span style="flex: 1; text-align: center;">
             {{'GAMES.broadcast' | translate}}
             <a [href]="'/live/' + game._id +  '/' + game.name" target="_blank">

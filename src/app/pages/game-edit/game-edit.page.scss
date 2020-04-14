@@ -185,6 +185,25 @@
       }
     }
 
+    .timer-button {
+      display: flex;
+      //border: 1px solid var(--border-color);
+      button {
+        padding: 0 10px;
+        &:hover {
+          adm-icon {
+            transform: scale(1.1);
+          }
+        }
+      }
+      adm-icon {
+        --height: 15px;
+        --width: 15px;
+        --fill: var(--primary-color);
+        transition: all 0.2s;
+      }
+    }
+
     .broadcast {
       padding: 30px;
       position: relative;
@@ -226,13 +245,25 @@
       .mode-change {
         position: absolute;
         top: 0;
-        left: 30px;
-        width: calc(100% - 60px);
+        right: 30px;
+        width: calc(50% - 60px);
         height: 30px;
         line-height: 30px;
         color: rgba(0, 0, 0, 0.6);
         font-size: 12px;
         text-align: right;
+      }
+
+      .timer {
+        position: absolute;
+        top: 0;
+        left: 30px;
+        width: calc(50% - 60px);
+        height: 30px;
+        line-height: 30px;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+        text-align: left;
       }
       live {
         ::ng-deep {

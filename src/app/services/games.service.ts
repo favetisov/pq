@@ -189,6 +189,16 @@ export class GamesService {
     return { success: true };
   }
 
+  async setTimer(game: Game, running, seconds) {
+    await this.ready$.toPromise();
+    await this.requester.load({
+      method: 'POST',
+      url: `/games/${game._id}/set_timer`,
+      params: { running, seconds },
+    });
+    return { success: true };
+  }
+
   onGameRoundUpdated(gameId: string) {
     return this.socket.fromEvent(IoMessages.onGameRoundUpdated).pipe(
       tap((c) => console.log(c, 'received')),
@@ -210,5 +220,9 @@ export class GamesService {
 
   onBroadcastUpdated(gameId: string) {
     return this.socket.fromEvent(IoMessages.onBroadcastUpdated).pipe(filter((e: any) => e.gameId == gameId));
+  }
+
+  onTimerUpdated(gameId: string) {
+    return this.socket.fromEvent(IoMessages.onTimerStarted).pipe(filter((e: any) => e.gameId == gameId));
   }
 }

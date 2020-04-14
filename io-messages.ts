@@ -5,4 +5,5 @@ export enum IoMessages {
   onAnswerSubmitted = 'onAnswerSubmitter',
   onAnswerEvaluated = 'onAnswerEvaluated',
   onBroadcastUpdated = 'onBroadcastUpdated',
+  onTimerStarted = 'onTimerStarted',
 }

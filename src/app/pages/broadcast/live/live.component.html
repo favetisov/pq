@@ -1,6 +1,25 @@
 <div class="twitch" id="twitch"></div>
+
+<iframe
+  *ngIf="src && !silentMode"
+  width="800"
+  height="100"
+  [src]="src"
+  frameborder="0"
+  allow=" autoplay; encrypted-media; picture-in-picture"
+></iframe>
+
 <div [class.silent]="silentMode">
   <ng-container *ngIf="game.broadcast.currentMode == 'slide'; else table">
+    <div
+      class="timer"
+      *ngIf="timerRunning"
+      [class.calm]="timerLeft > 15"
+      [class.danger]="timerLeft < 5"
+      [class.warning]="timerLeft >= 5 && timerLeft <= 15"
+    >
+      {{ timerLeft }}
+    </div>
     <img [src]="getSlideUrl(game.broadcast.resolvedSlide)" />
   </ng-container>
   <ng-template #table>

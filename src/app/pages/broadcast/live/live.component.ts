@@ -4,27 +4,48 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Game } from 'app/models/game.model';
 import * as Twitch from 'twitch-embed';
 import orderBy from 'lodash-es/orderBy';
+import { Socket } from 'ngx-socket-io';
+import { IoMessages } from '../../../../../io-messages';
+import { interval, Subject, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { GamesService } from 'app/services/games.service';
 
 @Component({
   selector: 'live',
   templateUrl: './live.component.html',
   styleUrls: ['./live.component.scss'],
 })
-export class LiveComponent {
+export class LiveComponent implements OnInit {
   @Input() game: Game;
   @Input() silentMode;
   clicked: false;
-  constructor(private sanitizer: DomSanitizer) {}
+  timerRunning = false;
+  timerLeft = 0;
+  src;
+  constructor(private sanitizer: DomSanitizer, private gameService: GamesService) {}
+
+  ngOnInit() {
+    if (this.game.youtubeLive) {
+      console.log('im in');
+      this.src = this.getYoutubeSrc();
+    }
+    this.gameService.onTimerUpdated(this.game._id).subscribe((e) => {
+      this.timerRunning = e.running;
+      this.timerLeft = e.seconds;
+    });
+    interval(1000).subscribe(() => {
+      if (this.timerLeft) this.timerLeft--;
+    });
+  }
 
   async ngAfterContentInit() {
-    if (!this.silentMode) {
+    if (!this.silentMode && this.game.twitchChannel) {
       const player = new Twitch.PlayerEmbed('twitch', {
         height: 100,
         width: Math.min(800, window.innerWidth),
         channel: this.game.twitchChannel,
         autoplay: true,
       });
-      console.log(player.getMuted());
     }
     this.game.teams = orderBy(this.game.teams, [(t) => this.calculateTeamScore(t)], ['DESC']).reverse();
   }
@@ -51,5 +72,11 @@ export class LiveComponent {
       return sum;
     }, 0);
     return score;
+  }
+
+  getYoutubeSrc() {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://www.youtube.com/embed/${this.game.youtubeLive}?rel=0&vq=tiny`,
+    );
   }
 }

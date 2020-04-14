@@ -52,4 +52,14 @@
       </section>
     </adm-card>
   </div>
+
+  <div
+    class="timer"
+    *ngIf="timerRunning"
+    [class.calm]="timerLeft > 15"
+    [class.danger]="timerLeft < 5"
+    [class.warning]="timerLeft >= 5 && timerLeft <= 15"
+  >
+    {{ timerLeft }}
+  </div>
 </ng-template>

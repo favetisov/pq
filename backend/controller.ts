@@ -4,7 +4,7 @@ import { ControllerError } from './utils/errors';
 import { App } from './app';
 import { IoMessages } from '../io-messages';
 import * as md5 from 'js-md5';
-import { existsSync, mkdirSync, rmdirSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { writeBase64ToFile } from './utils/base64ToFile';
 
 export const Controller = {
@@ -39,7 +39,11 @@ export const Controller = {
 
   createGame: async (req: Request) => {
     if (!req.body.name) throw new ControllerError('Incorrect params', 400);
-    const game = await new Game({ name: req.body.name, twitchChannel: req.body.twitchChannel }).save();
+    const game = await new Game({
+      name: req.body.name,
+      twitchChannel: req.body.twitchChannel,
+      youtubeLive: req.body.youtubeLive,
+    }).save();
     App.io.emit(IoMessages.onGamesListUpdated, await Controller.getGamesList(req));
     return game;
   },
@@ -188,6 +192,23 @@ export const Controller = {
       inProgress: req.body.broadcast.inProgress,
     });
 
+    return { success: true };
+  },
+
+  setTimer: async (req: Request) => {
+    const game = await Game.findById(req.params.gameId);
+    if (!game) throw new ControllerError('ITEM_NOT_FOUND', 400);
+    console.log('sending', IoMessages.onTimerStarted, {
+      gameId: req.params.gameId,
+      running: req.body.running,
+      seconds: req.body.seconds,
+    });
+
+    App.io.emit(IoMessages.onTimerStarted, {
+      gameId: req.params.gameId,
+      running: req.body.running,
+      seconds: req.body.seconds,
+    });
     return { success: true };
   },
 };

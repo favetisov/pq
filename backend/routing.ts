@@ -28,4 +28,5 @@ export const routes: Route[] = [
   { method: 'post', url: '/games/:gameId/update_state', handler: Controller.updateState },
   { method: 'post', url: '/games/:gameId/:code/submit_answer', handler: Controller.submitAnswer },
   { method: 'post', url: '/games/:gameId/delete', handler: Controller.deleteGame },
+  { method: 'post', url: '/games/:gameId/set_timer', handler: Controller.setTimer },
 ];

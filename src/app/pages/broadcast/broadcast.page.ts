@@ -29,6 +29,7 @@ export class BroadcastPage implements OnInit, OnDestroy {
         this.game.broadcast.currentMode = e.currentMode;
         this.game.broadcast.inProgress = e.inProgress;
       });
+
     this.state.loading = false;
   }
 

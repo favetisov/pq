@@ -10,6 +10,7 @@ export class Game extends AbstractModel {
   _id: string;
   name: string;
   twitchChannel: string;
+  youtubeLive: string;
   state: GameState = GameState.NOT_STARTED;
   currentRound = 0;
   currentSubround = 0;

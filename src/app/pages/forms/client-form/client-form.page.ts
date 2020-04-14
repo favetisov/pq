@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GamesService } from 'app/services/games.service';
 import { ActivatedRoute } from '@angular/router';
 import { Game, GameState } from 'app/models/game.model';
-import { AsyncSubject } from 'rxjs';
+import { AsyncSubject, interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -18,7 +18,8 @@ export class ClientFormPage implements OnInit, OnDestroy {
   };
 
   onDestroyed$ = new AsyncSubject();
-
+  timerRunning = false;
+  timerLeft = 0;
   game: Game;
   team;
   round;
@@ -51,6 +52,14 @@ export class ClientFormPage implements OnInit, OnDestroy {
       .subscribe((e: any) => {
         this.game.state = e.state;
       });
+
+    this.gamesService.onTimerUpdated(this.game._id).subscribe((e) => {
+      this.timerRunning = e.running;
+      this.timerLeft = e.seconds;
+    });
+    interval(1000).subscribe(() => {
+      if (this.timerLeft) this.timerLeft--;
+    });
 
     this.state.loading = false;
   }
