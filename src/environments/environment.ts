@@ -8,12 +8,12 @@ export const environment = {
     key: 'Pyuq',
   },
   hosts: {
-    API: 'http://localhost:3019/pq',
-    WS: 'http://localhost:3019',
-    PHOTO: 'http://localhost:3019',
-    // API: 'https://pyuq.ru/pq',
-    // WS: 'https://pyuq.ru',
-    // PHOTO: 'https://pyuq.ru/pq',
+    // API: 'http://localhost:3019/pq',
+    // WS: 'http://localhost:3019',
+    // PHOTO: 'http://localhost:3019',
+    API: 'https://pyuq.ru/pq',
+    WS: 'https://pyuq.ru',
+    PHOTO: 'https://pyuq.ru/pq',
   },
   ipApi: {
     key: '1107a9b86b7aa0548a0af5f1c2007eb1',

@@ -52,7 +52,7 @@ export const Controller = {
     if (!req.body.name) throw new ControllerError('Incorrect params', 400);
     await Game.findOneAndUpdate(
       { _id: req.params.gameId },
-      { name: req.body.name, twitchChannel: req.body.twitchChannel },
+      { name: req.body.name, twitchChannel: req.body.twitchChannel, youtubeLive: req.body.youtubeLive },
     );
     App.io.emit(IoMessages.onGamesListUpdated, await Controller.getGamesList(req));
     return { success: true };
